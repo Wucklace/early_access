@@ -6,7 +6,6 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Exhibition - The Future of Fair Launches</title>
   <style>
-    /* (All CSS kept identical to your previous styling) */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     :root {
       --metallic-silver: #C0C0C0;
@@ -18,107 +17,181 @@
       --charcoal: #0A0A0A;
       --dark-black: #000000;
     }
+
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background: var(--dark-black);
       color: var(--silver-light);
       overflow-x: hidden;
+      padding-bottom: 4rem;
     }
-    .animated-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden; }
-    .grid-overlay {
-      position: absolute; width: 200%; height: 200%;
-      background-image:
-        linear-gradient(var(--neon-blue) 1px, transparent 1px),
-        linear-gradient(90deg, var(--neon-blue) 1px, transparent 1px);
-      background-size: 50px 50px; opacity: 0.1; animation: gridMove 20s linear infinite;
+
+    header {
+      text-align: center;
+      padding: 5rem 2rem 2rem;
+      background: radial-gradient(circle at center, var(--charcoal) 0%, var(--dark-black) 100%);
     }
-    @keyframes gridMove { 0% { transform: translate(0,0) } 100% { transform: translate(50px,50px) } }
-    .orb { position: absolute; border-radius: 50%; filter: blur(60px); opacity: 0.3; animation: float 8s ease-in-out infinite; }
-    .orb1 { width:400px;height:400px;background:var(--neon-blue);top:10%;left:20%;animation-delay:0s;}
-    .orb2 { width:300px;height:300px;background:var(--neon-orange);top:60%;right:10%;animation-delay:2s;}
-    .orb3 { width:350px;height:350px;background:var(--neon-blue);bottom:10%;left:10%;animation-delay:4s;}
-    @keyframes float { 0%,100% { transform: translate(0,0) scale(1) } 33% { transform: translate(30px,-30px) scale(1.1) } 66% { transform: translate(-20px,20px) scale(0.9) } }
-    header { padding:2rem 5%; display:flex; justify-content:space-between; align-items:center; position:relative; z-index:100; }
-    .logo { font-size:2rem; font-weight:bold; background:linear-gradient(135deg,var(--neon-blue),var(--neon-orange)); -webkit-text-fill-color:transparent; text-shadow:0 0 30px var(--neon-blue); }
-    .status-badge { padding:0.5rem 1.5rem; background:rgba(21,198,230,0.2); border:1px solid var(--neon-blue); border-radius:30px; font-size:0.9rem; color:var(--neon-blue); animation:pulse 2s ease-in-out infinite; }
-    @keyframes pulse { 0%,100%{box-shadow:0 0 20px var(--neon-blue)} 50%{box-shadow:0 0 40px var(--neon-blue)} }
-    .hero { text-align:center; padding:8rem 5% 4rem; position:relative; }
-    .hero h1 { font-size:clamp(3rem,8vw,6rem); font-weight:900; margin-bottom:1.5rem; line-height:1.1; background:linear-gradient(135deg,var(--silver-light),var(--neon-blue),var(--neon-orange)); -webkit-text-fill-color:transparent; animation:slideUp 1s ease-out; }
-    @keyframes slideUp { from { opacity:0; transform: translateY(50px) } to { opacity:1; transform: translateY(0) } }
-    .hero .subtitle { font-size:clamp(1.2rem,3vw,1.8rem); color:var(--metallic-silver); margin-bottom:1rem; animation:slideUp 1s ease-out 0.2s both; }
-    .hero .tagline { font-size:clamp(1rem,2vw,1.3rem); color:var(--silver-dark); margin-bottom:3rem; max-width:800px; margin-left:auto; margin-right:auto; animation:slideUp 1s ease-out 0.4s both; }
-    .features { padding:4rem 5%; display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:2rem; max-width:1400px; margin:0 auto; }
-    .feature-card { background: linear-gradient(135deg, rgba(21,198,230,0.1), rgba(250,126,9,0.1)); border: 1px solid rgba(192,192,192,0.2); border-radius:20px; padding:2.5rem; transition:all 0.3s ease; position:relative; overflow:hidden; }
-    .feature-card::before { content:''; position:absolute; top:-50%; left:-50%; width:200%; height:200%; background:linear-gradient(45deg,transparent,var(--neon-blue),transparent); transform: rotate(45deg); opacity:0; transition:opacity 0.5s; }
-    .feature-card:hover::before{ opacity:0.1; animation:shimmer 1.5s ease-in-out infinite; }
-    @keyframes shimmer { 0%{ transform: rotate(45deg) translateX(-100%) } 100%{ transform: rotate(45deg) translateX(100%) } }
-    .feature-card:hover { transform: translateY(-10px); box-shadow: 0 20px 60px rgba(21,198,230,0.3); border-color:var(--neon-blue); }
-    .feature-icon { font-size:3rem; margin-bottom:1rem; display:inline-block; animation:bounce 2s ease-in-out infinite; }
-    @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
-    .feature-card h3 { font-size:1.5rem; margin-bottom:1rem; color:var(--neon-blue); }
-    .feature-card p { color:var(--silver-dark); line-height:1.6; }
-    .early-access { padding:6rem 5%; text-align:center; background: linear-gradient(180deg, transparent, rgba(21,198,230,0.05), transparent); }
-    .early-access h2 { font-size:clamp(2.5rem,5vw,4rem); margin-bottom:2rem; background:linear-gradient(135deg,var(--neon-orange),var(--neon-blue)); -webkit-text-fill-color:transparent; }
-    .access-steps { max-width:800px; margin:4rem auto; display:flex; flex-direction:column; gap:2rem; }
-    .step { background:rgba(26,26,26,0.8); border:1px solid var(--neon-blue); border-radius:15px; padding:2rem; text-align:left; transition:all 0.3s ease; }
-    .step:hover { transform:scale(1.02); box-shadow:0 10px 40px rgba(21,198,230,0.3); }
-    .step-number { display:inline-block; width:40px; height:40px; background:var(--neon-blue); color:var(--dark-black); border-radius:50%; text-align:center; line-height:40px; font-weight:bold; margin-right:1rem; }
-    .step h3 { font-size:1.5rem; margin-bottom:1rem; color:var(--neon-blue); }
-    .registration-form { max-width:600px; margin:3rem auto; background:rgba(26,26,26,0.9); padding:3rem; border-radius:20px; border:1px solid var(--neon-blue); box-shadow:0 20px 60px rgba(21,198,230,0.2); }
-    .form-group { margin-bottom:2rem; }
-    .form-group label { display:block; margin-bottom:0.5rem; color:var(--metallic-silver); font-weight:600; }
-    .form-group input { width:100%; padding:1rem; background:rgba(10,10,10,0.8); border:1px solid var(--silver-dark); border-radius:10px; color:var(--silver-light); font-size:1rem; transition:all 0.3s ease; }
-    .form-group input:focus { outline:none; border-color:var(--neon-blue); box-shadow:0 0 20px rgba(21,198,230,0.3); }
-    .submit-btn { width:100%; padding:1.2rem; background:linear-gradient(135deg,var(--neon-blue),var(--neon-orange)); border:none; border-radius:10px; color:var(--dark-black); font-size:1.2rem; font-weight:bold; cursor:pointer; transition:all 0.3s ease; position:relative; overflow:hidden; }
-    .submit-btn::before { content:''; position:absolute; top:50%; left:50%; width:0; height:0; border-radius:50%; background:rgba(255,255,255,0.3); transform:translate(-50%,-50%); transition:width 0.6s,height 0.6s; }
-    .submit-btn:hover::before { width:300px; height:300px; }
-    .submit-btn:hover { transform:scale(1.05); box-shadow:0 10px 40px rgba(21,198,230,0.5); }
-    .submit-btn:disabled { opacity:0.5; cursor:not-allowed; }
-    .testnet-notice { background:rgba(250,126,9,0.1); border:2px solid var(--neon-orange); border-radius:15px; padding:2rem; margin:4rem 5%; max-width:1000px; margin-left:auto; margin-right:auto; }
-    .testnet-notice h3 { color:var(--neon-orange); font-size:1.8rem; margin-bottom:1rem; }
-    .testnet-notice p { line-height:1.8; color:var(--silver-dark); }
-    footer { text-align:center; padding:3rem 5%; border-top:1px solid rgba(192,192,192,0.2); margin-top:4rem; }
-    .social-links { display:flex; gap:2rem; justify-content:center; margin-bottom:2rem; }
-    .social-links a { color:var(--neon-blue); font-size:1.5rem; transition:all 0.3s ease; }
-    .social-links a:hover { color:var(--neon-orange); transform:scale(1.2); }
-    .success-message { background:rgba(21,198,230,0.2); border:1px solid var(--neon-blue); border-radius:10px; padding:1rem; margin-top:1rem; display:none; }
-    .success-message.show { display:block; animation:slideUp 0.5s ease-out; }
-    .error-message { background:rgba(250,126,9,0.2); border:1px solid var(--neon-orange); border-radius:10px; padding:1rem; margin-top:1rem; color:var(--neon-orange); display:none; }
-    .error-message.show { display:block; animation:slideUp 0.5s ease-out; }
-    @media (max-width:768px) {
-      header { flex-direction:column; gap:1rem; }
-      .hero { padding:4rem 5% 2rem; }
-      .features { grid-template-columns:1fr; }
-      .registration-form { padding:2rem 1.5rem; }
+
+    header h1 {
+      font-size: 2.4rem;
+      background: linear-gradient(90deg, var(--neon-blue), var(--neon-orange));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    header p {
+      margin-top: 1rem;
+      color: var(--silver-dark);
+      font-size: 1.1rem;
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+      gap: 2rem;
+      padding: 3rem 2rem;
+      background: var(--deep-black);
+    }
+
+    .feature-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 12px;
+      padding: 1.5rem;
+      transition: transform 0.2s ease, border 0.2s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--neon-blue);
+    }
+
+    .feature-icon {
+      font-size: 1.8rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .testnet-notice {
+      padding: 3rem 2rem;
+      background: rgba(255,255,255,0.05);
+      margin: 3rem 1rem;
+      border-left: 4px solid var(--neon-blue);
+      border-radius: 8px;
+    }
+
+    .early-access {
+      padding: 4rem 2rem;
+      text-align: center;
+      background: var(--charcoal);
+    }
+
+    .registration-form {
+      margin: 0 auto;
+      max-width: 480px;
+      background: rgba(255,255,255,0.05);
+      padding: 2rem;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+      text-align: left;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: var(--silver-light);
+      font-weight: 500;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 0.8rem;
+      border: 1px solid var(--silver-dark);
+      border-radius: 8px;
+      background: var(--deep-black);
+      color: var(--silver-light);
+      font-size: 1rem;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: var(--neon-blue);
+    }
+
+    .submit-btn {
+      background: linear-gradient(90deg, var(--neon-blue), var(--neon-orange));
+      color: #fff;
+      padding: 0.8rem 1.5rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: opacity 0.2s;
+      width: 100%;
+    }
+
+    .submit-btn:hover { opacity: 0.9; }
+
+    /* Inline Alert */
+    .inline-alert {
+      padding: 1rem;
+      border-radius: 10px;
+      margin-top: 1rem;
+      display: none;
+      animation: fadeIn 0.4s ease-out;
+    }
+
+    .inline-alert.show { display: block; }
+    .inline-alert.error {
+      background: rgba(250,126,9,0.15);
+      border: 1px solid var(--neon-orange);
+      color: var(--neon-orange);
+    }
+
+    .inline-alert.success {
+      background: rgba(21,198,230,0.15);
+      border: 1px solid var(--neon-blue);
+      color: var(--neon-blue);
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      background: var(--deep-black);
+    }
+
+    .social-links a {
+      color: var(--silver-light);
+      margin: 0 0.5rem;
+      font-size: 1.5rem;
+      text-decoration: none;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
-<body>
-  <div class="animated-bg">
-    <div class="grid-overlay"></div>
-    <div class="orb orb1"></div>
-    <div class="orb orb2"></div>
-    <div class="orb orb3"></div>
-  </div>
 
+<body>
   <header>
-    <div class="logo">⚡ EXHIBITION</div>
-    <div class="status-badge">🔴 TESTNET EARLY ACCESS REGISTRATION</div>
+    <h1>Exhibition Protocol</h1>
+    <p>Pioneering Fair Launches for the AI Era</p>
   </header>
 
-  <section class="hero">
-    <h1>The Future of Fair Launches</h1>
-    <p class="subtitle">Anti-Rug. Anti-Scam. 100% Transparent.</p>
-    <p class="tagline">Built on Nexus Verifiable Layer Network for the AI Era. Where innovation meets integrity.</p>
-  </section>
-
   <section class="features">
-    <div class="feature-card"><div class="feature-icon">🔒</div><h3>Liquidity Lock Enforcement</h3><p>Smart contract-enforced liquidity locks (minimum 14 days on testnet). Project owners cannot rug pull - the blockchain guarantees it.</p></div>
-    <div class="feature-card"><div class="feature-icon">⚖️</div><h3>Fair Token Distribution</h3><p>Transparent vesting schedules with cliff periods. Contributors see exactly when they can claim tokens - no surprises, no games.</p></div>
-    <div class="feature-card"><div class="feature-icon">🛡️</div><h3>Soft Cap Protection</h3><p>Projects must reach their soft cap or all funds are automatically refunded. Your capital is protected by smart contract logic.</p></div>
-    <div class="feature-card"><div class="feature-icon">💎</div><h3>Automatic LP Creation</h3><p>Initial liquidity is automatically added to our AMM and locked. Project owners can't touch it until the lock period expires.</p></div>
-    <div class="feature-card"><div class="feature-icon">🎯</div><h3>Hard Cap Limits</h3><p>Instant finalization when hard cap is reached. No over-funding, no whale manipulation - just fair launches for everyone.</p></div>
-    <div class="feature-card"><div class="feature-icon">🤖</div><h3>Built for AI Era</h3><p>Deployed on Nexus Verifiable Layer Network - the blockchain designed for verifiable AI computations and next-gen applications.</p></div>
+    <div class="feature-card"><div class="feature-icon">🔒</div><h3>Liquidity Lock Enforcement</h3><p>Smart contract-enforced liquidity locks (minimum 14 days on testnet).</p></div>
+    <div class="feature-card"><div class="feature-icon">⚖️</div><h3>Fair Token Distribution</h3><p>Transparent vesting schedules with cliff periods. No surprises, no games.</p></div>
+    <div class="feature-card"><div class="feature-icon">🛡️</div><h3>Soft Cap Protection</h3><p>Projects must reach soft cap or all funds refunded automatically.</p></div>
+    <div class="feature-card"><div class="feature-icon">💎</div><h3>Automatic LP Creation</h3><p>Initial liquidity automatically added and locked securely.</p></div>
+    <div class="feature-card"><div class="feature-icon">🎯</div><h3>Hard Cap Limits</h3><p>Instant finalization when hard cap is reached. No manipulation.</p></div>
+    <div class="feature-card"><div class="feature-icon">🤖</div><h3>Built for AI Era</h3><p>Powered by Nexus Verifiable Layer Network for scalable AI computation.</p></div>
   </section>
 
   <div class="testnet-notice">
@@ -129,21 +202,13 @@
       <li>Maximum project duration: 21 days</li>
       <li>Minimum start delay: 15 minutes</li>
     </ul>
-    <p><strong>These parameters are FOR TESTING ONLY.</strong> The mainnet configuration will be heavily influenced by community feedback during this testnet phase. We're building this together - your input will shape the final product. Join our community channels to participate in governance discussions!</p>
+    <p><strong>These parameters are FOR TESTING ONLY.</strong> Community feedback during this phase will shape the final product.</p>
   </div>
 
   <section class="early-access">
     <h2>Get Early Access to Testnet</h2>
-    <p style="font-size:1.2rem; color:var(--silver-dark); margin-bottom:3rem;">Be among the first to experience the future of verifiable launches</p>
-
-    <div class="access-steps">
-      <div class="step"><span class="step-number">1</span><h3>Follow Us on X (Twitter)</h3><p>Follow <a href="https://x.com/ExhibitionDeFi" target="_blank" style="color:var(--neon-blue);">@ExhibitionDeFi</a> to stay updated with the latest developments</p></div>
-      <div class="step"><span class="step-number">2</span><h3>Repost Our Launch Announcement</h3><p>Share the revolution! Repost our pinned tweet to spread the word about fair launches</p></div>
-      <div class="step"><span class="step-number">3</span><h3>Submit Your Wallet Address</h3><p>Come back here and submit your wallet address to receive testnet tokens and early access</p></div>
-    </div>
-
     <div class="registration-form">
-      <h3 style="color:var(--neon-blue); margin-bottom:2rem; font-size:1.8rem;">Register for Early Access</h3>
+      <h3 style="color:var(--neon-blue); margin-bottom:2rem;">Register for Early Access</h3>
 
       <form id="accessForm" autocomplete="off">
         <div class="form-group">
@@ -151,40 +216,22 @@
           <input type="text" id="twitter" name="twitter" placeholder="@yourusername" required autocomplete="off" />
         </div>
 
-       <div class="form-group">
-  <label for="wallet">Your Wallet Address *</label>
-  <input
-    type="text"
-    id="wallet"
-    name="wallet"
-    placeholder="0x..."
-    required
-    pattern="^0x[a-fA-F0-9]{40}$"
-    autocomplete="new-password"
-    inputmode="text"
-    autocorrect="off"
-    autocapitalize="none"
-    spellcheck="false"
-  />
-  <small style="color:var(--silver-dark); margin-top:0.5rem; display:block;">
-    Tip: click the wallet field to connect your wallet and auto-fill the address.
-  </small>
-</div>
+        <div class="form-group">
+          <label for="wallet">Your Wallet Address *</label>
+          <input type="text" id="wallet" name="wallet" placeholder="0x..." required pattern="^0x[a-fA-F0-9]{40}$" inputmode="text" autocomplete="off" />
+          <small style="color:var(--silver-dark);">Click to connect wallet (optional)</small>
+        </div>
 
         <div class="form-group">
           <label for="proof">Proof of Repost (Tweet URL) *</label>
           <input type="url" id="proof" name="proof" placeholder="https://x.com/yourusername/status/..." required autocomplete="off" />
         </div>
 
-        <!-- Google reCAPTCHA -->
-        <div style="margin-bottom:1rem;">
-          <div class="g-recaptcha" data-sitekey="6LfQ-vArAAAAAN3L3Qug7MHQg_50xGFgvdiTKVzG"></div>
-        </div>
+        <div class="g-recaptcha" data-sitekey="6LfQ-vArAAAAAN3L3Qug7MHQg_50xGFgvdiTKVzG"></div>
 
         <button type="submit" class="submit-btn" id="submitBtn"><span>🚀 Request Early Access</span></button>
 
-        <div class="success-message" id="successMessage">✅ Success! You're on the list. Check your wallet for testnet tokens within 24-48 hours.</div>
-        <div class="error-message" id="errorMessage">❌ Oops! Something went wrong. Please try again or contact support.</div>
+        <div id="inlineMessage" class="inline-alert"></div>
       </form>
     </div>
   </section>
@@ -192,132 +239,79 @@
   <footer>
     <div class="social-links">
       <a href="https://x.com/ExhibitionDeFi" target="_blank" title="X (Twitter)">𝕏</a>
-      <a href="#" target="_blank" title="Discord">💬</a>
-      <a href="#" target="_blank" title="Telegram">✈️</a>
-      <a href="#" target="_blank" title="GitHub">💻</a>
+      <a href="#" title="Discord">💬</a>
+      <a href="#" title="Telegram">✈️</a>
+      <a href="#" title="GitHub">💻</a>
     </div>
     <p style="color:var(--silver-dark);">Built on Nexus Verifiable Layer Network | Testnet Phase | Community-Driven Development</p>
-    <p style="color:var(--silver-dark); margin-top:1rem; font-size:0.9rem;">© 2025 Exhibition Protocol. Pioneering Fair Launches for the AI Era.</p>
+    <p style="color:var(--silver-dark); margin-top:1rem; font-size:0.9rem;">© 2025 Exhibition Protocol</p>
   </footer>
 
   <script>
-    // ---------- CONFIG (replace with your Apps Script Web App URL after deploy) ----------
     const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx6PIoqUwMpKs36YwlCTaLp1sP0G86jrlEaMb2jJRQ-23WXan1C6lyeuSSh9B5M86dMTA/exec";
-    // ---------- end config ----------
-
     const walletRegex = /^0x[a-fA-F0-9]{40}$/;
-    const repostRegex = /^https?:\/\/(x|twitter)\.com\/([A-Za-z0-9_]{1,15})\/status\/([0-9]+)(\/.*)?$/i;
+    const repostRegex = /^https?:\/\/(x|twitter)\.com\/([A-Za-z0-9_]{1,15})\/status\/([0-9]+)/i;
+    const inlineMsg = document.getElementById("inlineMessage");
 
-    // Autofill wallet when clicking wallet field
-    document.getElementById('wallet').addEventListener('click', async function () {
-      if (!window.ethereum) {
-        alert('No web3 wallet detected. Please install MetaMask or another wallet to auto-fill your address.');
-        return;
-      }
+    function showMessage(text, type = "error") {
+      inlineMsg.textContent = text;
+      inlineMsg.className = `inline-alert show ${type}`;
+      setTimeout(() => inlineMsg.classList.remove("show"), 7000);
+    }
+
+    document.getElementById('wallet').addEventListener('click', async function() {
+      if (!window.ethereum) return;
       try {
         const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
         if (accounts && accounts[0]) this.value = accounts[0];
       } catch (err) {
-        console.error('Wallet connect error:', err);
+        console.warn("Wallet connect failed", err);
       }
     });
 
-    // submit handler
-    document.getElementById('accessForm').addEventListener('submit', async function (e) {
+    document.getElementById("accessForm").addEventListener("submit", async function(e) {
       e.preventDefault();
+      const btn = document.getElementById("submitBtn");
+      const twitter = document.getElementById("twitter").value.trim().replace(/^@/, "").toLowerCase();
+      const wallet = document.getElementById("wallet").value.trim();
+      const proof = document.getElementById("proof").value.trim();
 
-      const btn = document.getElementById('submitBtn');
-      const successMsg = document.getElementById('successMessage');
-      const errorMsg = document.getElementById('errorMessage');
-      successMsg.classList.remove('show');
-      errorMsg.classList.remove('show');
+      if (!walletRegex.test(wallet)) return showMessage("Please enter a valid Ethereum wallet address (0x...)", "error");
 
-      const twitterRaw = document.getElementById('twitter').value.trim();
-      const twitter = twitterRaw.replace(/^@/, '').toLowerCase();
-      const wallet = document.getElementById('wallet').value.trim();
-      const proof = document.getElementById('proof').value.trim();
+      const match = proof.match(repostRegex);
+      if (!match) return showMessage("Please provide a valid repost URL like https://x.com/exhibitiondefi/status/123...", "error");
 
-      if (!walletRegex.test(wallet)) {
-        alert('Please enter a valid Ethereum wallet address (0x...)');
-        return;
-      }
-
-      const repostMatch = proof.match(repostRegex);
-      if (!repostMatch) {
-        alert('Please provide a valid X/Twitter status URL: https://x.com/yourhandle/status/1234567890');
-        return;
-      }
-      const repostHandle = repostMatch[2].toLowerCase();
-      if (repostHandle !== twitter) {
-        alert('The Twitter handle in the repost URL does not match the handle you provided. Please ensure you paste the URL from your own account.');
-        return;
-      }
+      if (!proof.includes("exhibitiondefi")) return showMessage("❌ Not a repost of @ExhibitionDeFi’s pinned post.", "error");
 
       const token = grecaptcha.getResponse();
-      if (!token) {
-        alert('Please complete the reCAPTCHA');
-        return;
-      }
-
-      const payload = {
-        wallet: wallet.toLowerCase(),
-        twitter: twitter,
-        proof: proof,
-        token: token
-      };
+      if (!token) return showMessage("Please complete the reCAPTCHA.", "error");
 
       btn.disabled = true;
-      btn.innerHTML = '<span>⏳ Submitting...</span>';
+      btn.innerHTML = "<span>⏳ Submitting...</span>";
 
       try {
         const res = await fetch(GOOGLE_SCRIPT_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ twitter, wallet, proof, token }),
         });
 
         const text = await res.text();
-
-        if (text === 'success') {
-          successMsg.classList.add('show');
-          btn.innerHTML = '<span>✅ Registered!</span>';
+        if (text === "success") {
+          showMessage("✅ Success! You're on the list.", "success");
           this.reset();
           grecaptcha.reset();
-        } else if (text === 'duplicate') {
-          alert('⚠️ You have already registered with this wallet or Twitter handle.');
-        } else if (text === 'recaptcha_failed') {
-          alert('❌ reCAPTCHA verification failed. Please complete the reCAPTCHA and try again.');
-        } else if (text === 'invalid_repost') {
-          alert('❌ The repost URL is invalid or does not match your handle. Please check and try again.');
+        } else if (text === "duplicate") {
+          showMessage("⚠️ You have already registered.", "error");
         } else {
-          console.error('Server response:', text);
-          throw new Error('Unexpected server response: ' + text);
+          showMessage("❌ Something went wrong.", "error");
         }
-      } catch (err) {
-        console.error('Submission error:', err);
-        errorMsg.classList.add('show');
+      } catch {
+        showMessage("⚠️ Network or server error.", "error");
       } finally {
         btn.disabled = false;
-        btn.innerHTML = '<span>🚀 Request Early Access</span>';
+        btn.innerHTML = "<span>🚀 Request Early Access</span>";
       }
-    });
-
-    // observer for animations (unchanged)
-    const observerOptions = { threshold: 0.2, rootMargin: '0px 0px -100px 0px' };
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.style.opacity = '1';
-          entry.target.style.transform = 'translateY(0)';
-        }
-      });
-    }, observerOptions);
-
-    document.querySelectorAll('.feature-card, .step').forEach(card => {
-      card.style.opacity = '0';
-      card.style.transform = 'translateY(30px)';
-      card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-      observer.observe(card);
     });
   </script>
 
