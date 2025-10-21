@@ -416,8 +416,12 @@
     }
 
     // === CONFIG ===
-    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyyt5cN-71Eng6CVdLA8ud_OniJ8ikwzaiswRYT4tA5WwYtdhU66poa8vzl7aZ13cYL/execc";
-    const OBFUSCATED_APP_KEY_B64 = "aGZ3OTMy amY5cTIwZkBrNEdzZyMxMmFzZGxr";
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyyt5cN-71Eng6CVdLA8ud_OniJ8ikwzaiswRYT4tA5WwYtdhU66poa8vzl7aZ13cYL/exec";
+    
+    // Replace this with btoa("YOUR_REAL_SECRET_KEY") to match the Apps Script VALID_APP_KEY
+    // Example: Open browser console and run: btoa("hfw932jf9q20f@k4Gsg#12asdlk")
+    // Then paste the result below
+    const OBFUSCATED_APP_KEY_B64 ="NTM5MWE1OGEyMDQ2MzBmYzdjZTg2YWI4ZDBlMmQxZjIyNjA3YWUwZjM4MWY5YjllMmZiYTgyZmJkYzVkYmY5OQ=="; // Base64 of "hfw932jf9q20f@k4Gsg#12asdlk"
 
     const appKey = (() => {
       try {
