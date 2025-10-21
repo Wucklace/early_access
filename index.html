@@ -57,12 +57,29 @@
       margin-right: auto;
     }
 
+    .features-section {
+      background: var(--deep-black);
+      padding: 4rem 2rem 3rem;
+    }
+
+    .features-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .features-header h2 {
+      font-size: 2.5rem;
+      background: linear-gradient(90deg, var(--neon-blue), var(--neon-orange));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: bold;
+    }
+
     .features {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
       gap: 2rem;
-      padding: 3rem 2rem;
-      background: var(--deep-black);
     }
 
     .feature-card {
@@ -303,13 +320,18 @@
     </div>
   </header>
 
-  <section class="features">
-    <div class="feature-card"><div class="feature-icon">🔒</div><h3>Liquidity Lock Enforcement</h3><p>Smart contract-enforced liquidity locks (minimum 14 days on testnet).</p></div>
-    <div class="feature-card"><div class="feature-icon">⚖️</div><h3>Fair Token Distribution</h3><p>Transparent vesting schedules with cliff periods. No surprises, no games.</p></div>
-    <div class="feature-card"><div class="feature-icon">🛡️</div><h3>Soft Cap Protection</h3><p>Projects must reach soft cap or all funds refunded automatically.</p></div>
-    <div class="feature-card"><div class="feature-icon">💎</div><h3>Automatic LP Creation</h3><p>Initial liquidity automatically added and locked securely.</p></div>
-    <div class="feature-card"><div class="feature-icon">🎯</div><h3>Hard Cap Limits</h3><p>Instant finalization when hard cap is reached. No manipulation.</p></div>
-    <div class="feature-card"><div class="feature-icon">🤖</div><h3>Built for AI Era</h3><p>Powered by Nexus Verifiable Layer Network for scalable AI computation.</p></div>
+  <section class="features-section">
+    <div class="features-header">
+      <h2>Why Choose Exhibition</h2>
+    </div>
+    <div class="features">
+      <div class="feature-card"><div class="feature-icon">🔒</div><h3>Liquidity Lock Enforcement</h3><p>Smart contract-enforced liquidity locks (minimum 14 days on testnet).</p></div>
+      <div class="feature-card"><div class="feature-icon">⚖️</div><h3>Fair Token Distribution</h3><p>Transparent vesting schedules with cliff periods. No surprises, no games.</p></div>
+      <div class="feature-card"><div class="feature-icon">🛡️</div><h3>Soft Cap Protection</h3><p>Projects must reach soft cap or all funds refunded automatically.</p></div>
+      <div class="feature-card"><div class="feature-icon">💎</div><h3>Automatic LP Creation</h3><p>Initial liquidity automatically added and locked securely.</p></div>
+      <div class="feature-card"><div class="feature-icon">🎯</div><h3>Hard Cap Limits</h3><p>Instant finalization when hard cap is reached. No manipulation.</p></div>
+      <div class="feature-card"><div class="feature-icon">🤖</div><h3>Built for AI Era</h3><p>Powered by Nexus Verifiable Layer Network for scalable AI computation.</p></div>
+    </div>
   </section>
 
   <div class="testnet-notice">
