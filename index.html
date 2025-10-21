@@ -135,8 +135,8 @@
     }
 
     .submit-btn:hover { opacity: 0.9; }
+    .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
-    /* Inline Alert */
     .inline-alert {
       padding: 1rem;
       border-radius: 10px;
@@ -156,6 +156,20 @@
       background: rgba(21,198,230,0.15);
       border: 1px solid var(--neon-blue);
       color: var(--neon-blue);
+    }
+
+    .debug-console {
+      margin-top: 2rem;
+      padding: 1rem;
+      background: rgba(0,0,0,0.5);
+      border: 1px solid var(--silver-dark);
+      border-radius: 8px;
+      max-height: 200px;
+      overflow-y: auto;
+      font-family: monospace;
+      font-size: 0.85rem;
+      text-align: left;
+      color: #00ff00;
     }
 
     footer {
@@ -208,7 +222,7 @@
   <section class="early-access">
     <h2>Get Early Access to Testnet</h2>
     <div class="registration-form">
-      <h3 style="color:var(--neon-blue); margin-bottom:2rem;">Register for Early Access</h3>
+      <h3 style="color:var(--neon-blue); margin-bottom:2rem;">Register for Early Access (Debug Mode)</h3>
 
       <form id="accessForm" autocomplete="off">
         <div class="form-group">
@@ -232,6 +246,8 @@
         <button type="submit" class="submit-btn" id="submitBtn"><span>🚀 Request Early Access</span></button>
 
         <div id="inlineMessage" class="inline-alert"></div>
+        
+        <div id="debugConsole" class="debug-console"></div>
       </form>
     </div>
   </section>
@@ -248,69 +264,133 @@
   </footer>
 
   <script>
-    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw0H9cPR9YOp70jFCKY5d-uPzT-u2Z5YuuqTlX_vWi5huIC1V1-dPc5mhnjg-PSBhCcRQ/exec";
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx6PIoqUwMpKs36YwlCTaLp1sP0G86jrlEaMb2jJRQ-23WXan1C6lyeuSSh9B5M86dMTA/exec";
     const walletRegex = /^0x[a-fA-F0-9]{40}$/;
     const repostRegex = /^https?:\/\/(x|twitter)\.com\/([A-Za-z0-9_]{1,15})\/status\/([0-9]+)/i;
     const inlineMsg = document.getElementById("inlineMessage");
+    const debugConsole = document.getElementById("debugConsole");
+
+    function log(message) {
+      const timestamp = new Date().toLocaleTimeString();
+      debugConsole.innerHTML += `[${timestamp}] ${message}<br>`;
+      debugConsole.scrollTop = debugConsole.scrollHeight;
+      console.log(message);
+    }
 
     function showMessage(text, type = "error") {
       inlineMsg.textContent = text;
       inlineMsg.className = `inline-alert show ${type}`;
+      log(`Message shown: ${text} (${type})`);
       setTimeout(() => inlineMsg.classList.remove("show"), 7000);
     }
 
+    log("Page loaded successfully");
+
     document.getElementById('wallet').addEventListener('click', async function() {
-      if (!window.ethereum) return;
+      if (!window.ethereum) {
+        log("No Web3 wallet detected");
+        return;
+      }
       try {
+        log("Requesting wallet connection...");
         const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-        if (accounts && accounts[0]) this.value = accounts[0];
+        if (accounts && accounts[0]) {
+          this.value = accounts[0];
+          log("Wallet connected: " + accounts[0]);
+        }
       } catch (err) {
-        console.warn("Wallet connect failed", err);
+        log("Wallet connect error: " + err.message);
       }
     });
 
     document.getElementById("accessForm").addEventListener("submit", async function(e) {
       e.preventDefault();
+      log("Form submitted");
+      
       const btn = document.getElementById("submitBtn");
       const twitter = document.getElementById("twitter").value.trim().replace(/^@/, "").toLowerCase();
       const wallet = document.getElementById("wallet").value.trim();
       const proof = document.getElementById("proof").value.trim();
 
-      if (!walletRegex.test(wallet)) return showMessage("Please enter a valid Ethereum wallet address (0x...)", "error");
+      log("Twitter: " + twitter);
+      log("Wallet: " + wallet);
+      log("Proof URL: " + proof);
+
+      // Client-side validation
+      if (!walletRegex.test(wallet)) {
+        log("Invalid wallet format");
+        return showMessage("Please enter a valid Ethereum wallet address (0x...)", "error");
+      }
 
       const match = proof.match(repostRegex);
-      if (!match) return showMessage("Please provide a valid repost URL like https://x.com/exhibitiondefi/status/123...", "error");
+      if (!match) {
+        log("Invalid repost URL format");
+        return showMessage("Please provide a valid repost URL like https://x.com/exhibitiondefi/status/123...", "error");
+      }
 
-      if (!proof.includes("exhibitiondefi")) return showMessage("❌ Not a repost of @ExhibitionDeFi’s pinned post.", "error");
+      if (!proof.toLowerCase().includes("exhibitiondefi")) {
+        log("URL does not contain 'exhibitiondefi'");
+        return showMessage("❌ Not a repost of @ExhibitionDeFi's pinned post.", "error");
+      }
 
       const token = grecaptcha.getResponse();
-      if (!token) return showMessage("Please complete the reCAPTCHA.", "error");
+      if (!token) {
+        log("reCAPTCHA not completed");
+        return showMessage("Please complete the reCAPTCHA.", "error");
+      }
+      log("reCAPTCHA token obtained: " + token.substring(0, 20) + "...");
 
       btn.disabled = true;
       btn.innerHTML = "<span>⏳ Submitting...</span>";
 
+      const payload = { twitter, wallet, proof, token };
+      log("Payload: " + JSON.stringify(payload));
+      log("Sending POST to: " + GOOGLE_SCRIPT_URL);
+
       try {
         const res = await fetch(GOOGLE_SCRIPT_URL, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ twitter, wallet, proof, token }),
+          mode: "no-cors",
+          headers: { 
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(payload),
         });
 
-        const text = await res.text();
-        if (text === "success") {
-          showMessage("✅ Success! You're on the list.", "success");
+        log("Response status: " + res.status);
+        log("Response type: " + res.type);
+
+        // With no-cors mode, we can't read the response
+        if (res.type === 'opaque') {
+          log("Opaque response received (no-cors mode) - assuming success");
+          showMessage("✅ Request submitted! Check your spreadsheet to confirm.", "success");
           this.reset();
           grecaptcha.reset();
-        } else if (text === "duplicate") {
-          showMessage("⚠️ You have already registered.", "error");
         } else {
-          showMessage("❌ Something went wrong.", "error");
+          const text = await res.text();
+          log("Response text: " + text);
+
+          if (text === "success") {
+            showMessage("✅ Success! You're on the list.", "success");
+            this.reset();
+            grecaptcha.reset();
+          } else if (text === "duplicate") {
+            showMessage("⚠️ You have already registered.", "error");
+          } else if (text === "recaptcha_failed") {
+            showMessage("❌ reCAPTCHA verification failed. Please try again.", "error");
+            grecaptcha.reset();
+          } else {
+            showMessage("❌ Server returned: " + text, "error");
+          }
         }
-      } catch {
-        showMessage("⚠️ Network or server error.", "error");
+      } catch (err) {
+        log("Fetch error: " + err.message);
+        log("Error stack: " + err.stack);
+        showMessage("⚠️ Network error: " + err.message, "error");
       } finally {
         btn.disabled = false;
         btn.innerHTML = "<span>🚀 Request Early Access</span>";
+        log("Form submission complete");
       }
     });
   </script>
