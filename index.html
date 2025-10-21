@@ -264,7 +264,7 @@
   </footer>
 
   <script>
-    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx6PIoqUwMpKs36YwlCTaLp1sP0G86jrlEaMb2jJRQ-23WXan1C6lyeuSSh9B5M86dMTA/exec";
+    const GOOGLE_SCRIPT_URL = "https://https://script.google.com/macros/s/AKfycbz-_LxDYYDdS7E4e5VtGq_aDTDHT3GZt5urocqCIICGZnvLdZKZ2H9aVYfv08n5zSlbrg/exec";
     const walletRegex = /^0x[a-fA-F0-9]{40}$/;
     const repostRegex = /^https?:\/\/(x|twitter)\.com\/([A-Za-z0-9_]{1,15})\/status\/([0-9]+)/i;
     const inlineMsg = document.getElementById("inlineMessage");
@@ -350,38 +350,30 @@
       try {
         const res = await fetch(GOOGLE_SCRIPT_URL, {
           method: "POST",
-          mode: "no-cors",
           headers: { 
-            "Content-Type": "application/json"
+            "Content-Type": "text/plain"
           },
           body: JSON.stringify(payload),
         });
 
         log("Response status: " + res.status);
-        log("Response type: " + res.type);
+        
+        const text = await res.text();
+        log("Response text: " + text);
 
-        // With no-cors mode, we can't read the response
-        if (res.type === 'opaque') {
-          log("Opaque response received (no-cors mode) - assuming success");
-          showMessage("✅ Request submitted! Check your spreadsheet to confirm.", "success");
+        if (text === "success") {
+          showMessage("✅ Success! You're on the list.", "success");
           this.reset();
           grecaptcha.reset();
+        } else if (text === "duplicate") {
+          showMessage("⚠️ You have already registered.", "error");
+        } else if (text === "recaptcha_failed") {
+          showMessage("❌ reCAPTCHA verification failed. Please try again.", "error");
+          grecaptcha.reset();
+        } else if (text === "invalid_wallet") {
+          showMessage("❌ Invalid wallet address format.", "error");
         } else {
-          const text = await res.text();
-          log("Response text: " + text);
-
-          if (text === "success") {
-            showMessage("✅ Success! You're on the list.", "success");
-            this.reset();
-            grecaptcha.reset();
-          } else if (text === "duplicate") {
-            showMessage("⚠️ You have already registered.", "error");
-          } else if (text === "recaptcha_failed") {
-            showMessage("❌ reCAPTCHA verification failed. Please try again.", "error");
-            grecaptcha.reset();
-          } else {
-            showMessage("❌ Server returned: " + text, "error");
-          }
+          showMessage("❌ Server returned: " + text, "error");
         }
       } catch (err) {
         log("Fetch error: " + err.message);
