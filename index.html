@@ -347,7 +347,7 @@
 
   <section class="early-access">
     <div class="registration-form">
-      <h3 style="color:var(--neon-blue); margin-bottom:1.5rem;">Register for Early Access (Debug Mode)</h3>
+      <h3 style="color:var(--neon-blue); margin-bottom:1.5rem;">Register for Early Access</h3>
 
       <div class="steps-container">
         <h4 style="color:var(--silver-light); margin-bottom:1rem; font-size:1rem;">Complete These Steps First:</h4>
@@ -422,12 +422,9 @@
     const walletRegex = /^0x[a-fA-F0-9]{40}$/;
     const repostRegex = /^https?:\/\/(x|twitter)\.com\/([A-Za-z0-9_]{1,15})\/status\/([0-9]+)/i;
     const inlineMsg = document.getElementById("inlineMessage");
-    const debugConsole = document.getElementById("debugConsole");
 
     function log(message) {
       const timestamp = new Date().toLocaleTimeString();
-      debugConsole.innerHTML += `[${timestamp}] ${message}<br>`;
-      debugConsole.scrollTop = debugConsole.scrollHeight;
       console.log(message);
     }
 
@@ -545,3 +542,4 @@
 </body>
 
 </html>
+
