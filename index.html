@@ -46,6 +46,17 @@
       font-size: 1.1rem;
     }
 
+    .header-access-banner {
+      margin-top: 3rem;
+      padding: 2rem;
+      background: rgba(21,198,230,0.08);
+      border: 1px solid rgba(21,198,230,0.3);
+      border-radius: 16px;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
     .features {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
@@ -84,6 +95,24 @@
       padding: 4rem 2rem;
       text-align: center;
       background: var(--charcoal);
+    }
+
+    .access-title {
+      font-size: 2.5rem;
+      font-weight: bold;
+      background: linear-gradient(90deg, var(--neon-blue), var(--neon-orange));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.8rem;
+      animation: fadeIn 0.8s ease-out;
+    }
+
+    .access-subtitle {
+      font-size: 1.1rem;
+      color: var(--silver-light);
+      font-weight: 300;
+      letter-spacing: 0.5px;
     }
 
     .registration-form {
@@ -172,6 +201,77 @@
       color: #00ff00;
     }
 
+    .steps-container {
+      background: rgba(21,198,230,0.05);
+      border: 1px solid rgba(21,198,230,0.2);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      text-align: left;
+    }
+
+    .step-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 1.2rem;
+      padding: 0.8rem;
+      background: rgba(0,0,0,0.3);
+      border-radius: 8px;
+      transition: all 0.3s ease;
+    }
+
+    .step-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .step-item:hover {
+      background: rgba(21,198,230,0.08);
+      transform: translateX(5px);
+    }
+
+    .step-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      min-width: 32px;
+      background: linear-gradient(135deg, var(--neon-blue), var(--neon-orange));
+      color: #fff;
+      border-radius: 50%;
+      font-weight: bold;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+
+    .step-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .step-content strong {
+      color: var(--silver-light);
+      font-size: 0.95rem;
+    }
+
+    .step-link {
+      color: var(--neon-blue);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .step-link:hover {
+      color: var(--neon-orange);
+      text-decoration: underline;
+    }
+
     footer {
       text-align: center;
       padding: 2rem;
@@ -197,6 +297,10 @@
   <header>
     <h1>Exhibition Defi</h1>
     <p>Pioneering verifiable Fair Token Launches for the AI Era on Nexus</p>
+    <div class="header-access-banner">
+      <h2 class="access-title">Early Access Registration</h2>
+      <p class="access-subtitle">Join the Testnet Waitlist - Limited Spots Available</p>
+    </div>
   </header>
 
   <section class="features">
@@ -220,9 +324,37 @@
   </div>
 
   <section class="early-access">
-    <h2>Get Early Access to Testnet</h2>
     <div class="registration-form">
-      <h3 style="color:var(--neon-blue); margin-bottom:2rem;">Register for Early Access (Debug Mode)</h3>
+      <h3 style="color:var(--neon-blue); margin-bottom:1.5rem;">Register for Early Access (Debug Mode)</h3>
+
+      <div class="steps-container">
+        <h4 style="color:var(--silver-light); margin-bottom:1rem; font-size:1rem;">Complete These Steps First:</h4>
+        <div class="step-item">
+          <span class="step-number">1</span>
+          <div class="step-content">
+            <strong>Follow @ExhibitionDeFi</strong>
+            <a href="https://x.com/exhibitiondefi" target="_blank" rel="noopener" class="step-link">Visit Profile →</a>
+          </div>
+        </div>
+        <div class="step-item">
+          <span class="step-number">2</span>
+          <div class="step-content">
+            <strong>Like & Comment on Pinned Post</strong>
+            <a href="https://x.com/exhibitiondefi/status/1979344321255006386" target="_blank" rel="noopener" class="step-link">View Post →</a>
+          </div>
+        </div>
+        <div class="step-item">
+          <span class="step-number">3</span>
+          <div class="step-content">
+            <strong>Repost the Pinned Post</strong>
+            <a href="https://x.com/exhibitiondefi/status/1979344321255006386" target="_blank" rel="noopener" class="step-link">Repost Now →</a>
+          </div>
+        </div>
+      </div>
+
+      <div style="border-top: 1px solid rgba(255,255,255,0.1); margin: 2rem 0; padding-top: 2rem;">
+        <h4 style="color:var(--silver-light); margin-bottom:1.5rem; font-size:1rem;">Now Fill Out the Form:</h4>
+      </div>
 
       <form id="accessForm" autocomplete="off">
         <div class="form-group">
@@ -260,7 +392,7 @@
       <a href="https://github.com/ExhibitionDefi" title="GitHub">💻</a>
     </div>
     <p style="color:var(--silver-dark);">Built on Nexus Verifiable Layer Network | Testnet Phase | Community-Driven Development</p>
-    <p style="color:var(--silver-dark); margin-top:1rem; font-size:0.9rem;">© 2025 Exhibition Protocol</p>
+    <p style="color:var(--silver-dark); margin-top:1rem; font-size:0.9rem;">© 2025 Exhibition Defi</p>
   </footer>
 
   <script>
@@ -389,5 +521,4 @@
 
   <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </body>
-
 </html>
