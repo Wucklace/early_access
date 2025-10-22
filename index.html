@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.google.com https://www.gstatic.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://script.google.com https://www.google.com; frame-src https://www.google.com;">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.google.com https://www.gstatic.com https://script.google.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https://script.google.com https://www.google.com; frame-src https://www.google.com;">
   <link rel="icon" href="/favicon-16x16.png" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Exhibition - The Future of Fair Launches</title>
@@ -159,6 +159,20 @@
       color: var(--neon-blue);
     }
 
+    .debug-console {
+      margin-top: 2rem;
+      padding: 1rem;
+      background: rgba(0,0,0,0.5);
+      border: 1px solid var(--silver-dark);
+      border-radius: 8px;
+      max-height: 200px;
+      overflow-y: auto;
+      font-family: monospace;
+      font-size: 0.85rem;
+      text-align: left;
+      color: #00ff00;
+    }
+
     footer {
       text-align: center;
       padding: 2rem;
@@ -209,12 +223,12 @@
   <section class="early-access">
     <h2>Get Early Access to Testnet</h2>
     <div class="registration-form">
-      <h3 style="color:var(--neon-blue); margin-bottom:2rem;">Register for Early Access</h3>
+      <h3 style="color:var(--neon-blue); margin-bottom:2rem;">Register for Early Access (Debug Mode)</h3>
 
       <form id="accessForm" autocomplete="off">
         <div class="form-group">
           <label for="twitter">Your X (Twitter) Handle *</label>
-          <input type="text" id="twitter" name="twitter" placeholder="@yourusername" required autocomplete="off" maxlength="15" />
+          <input type="text" id="twitter" name="twitter" placeholder="@yourusername" required autocomplete="off" maxlength="16" />
         </div>
 
         <div class="form-group">
@@ -233,6 +247,8 @@
         <button type="submit" class="submit-btn" id="submitBtn"><span>🚀 Request Early Access</span></button>
 
         <div id="inlineMessage" class="inline-alert"></div>
+        
+        <div id="debugConsole" class="debug-console"></div>
       </form>
     </div>
   </section>
@@ -240,188 +256,161 @@
   <footer>
     <div class="social-links">
       <a href="https://x.com/ExhibitionDeFi" target="_blank" rel="noopener noreferrer" title="X (Twitter)">𝕏</a>
-      <a href="#" rel="noopener noreferrer" title="Discord">💬</a>
-      <a href="#" rel="noopener noreferrer" title="Telegram">✈️</a>
-      <a href="#" rel="noopener noreferrer" title="GitHub">💻</a>
+      <a href="#" title="Discord">💬</a>
+      <a href="#" title="Telegram">✈️</a>
+      <a href="https://github.com/ExhibitionDefi" title="GitHub" target="_blank" rel="noopener noreferrer">💻</a>
     </div>
     <p style="color:var(--silver-dark);">Built on Nexus Verifiable Layer Network | Testnet Phase | Community-Driven Development</p>
-    <p style="color:var(--silver-dark); margin-top:1rem; font-size:0.9rem;">© 2025 Exhibition Protocol</p>
+    <p style="color:var(--silver-dark); margin-top:1rem; font-size:0.9rem;">© 2025 Exhibition Defi</p>
   </footer>
 
   <script>
-    (function() {
-      'use strict';
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwl6VQak9iS2ZAVMIwq7kZxPoPPTc8ArNyisbFEXqoxhpnQecmE9teiNHRZIOuT33y1Ag/exec";
+    const walletRegex = /^0x[a-fA-F0-9]{40}$/;
+    const twitterRegex = /^[a-zA-Z0-9_]{1,15}$/;
+    const repostRegex = /^https?:\/\/(x|twitter)\.com\/([A-Za-z0-9_]{1,15})\/status\/([0-9]+)$/i;
+    const inlineMsg = document.getElementById("inlineMessage");
+    const debugConsole = document.getElementById("debugConsole");
 
-      const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwl6VQak9iS2ZAVMIwq7kZxPoPPTc8ArNyisbFEXqoxhpnQecmE9teiNHRZIOuT33y1Ag/exec";
-      const WALLET_REGEX = /^0x[a-fA-F0-9]{40}$/;
-      const REPOST_REGEX = /^https?:\/\/(x|twitter)\.com\/([A-Za-z0-9_]{1,15})\/status\/([0-9]+)(\?.*)?$/i;
-      const TWITTER_HANDLE_REGEX = /^[A-Za-z0-9_]{1,15}$/;
+    // Sanitize text content to prevent XSS
+    function sanitizeText(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    // Safe logging function
+    function log(message) {
+      const timestamp = new Date().toLocaleTimeString();
+      const sanitized = sanitizeText(String(message));
+      debugConsole.innerHTML += `[${timestamp}] ${sanitized}<br>`;
+      debugConsole.scrollTop = debugConsole.scrollHeight;
+      console.log(message);
+    }
+
+    // Safe message display
+    function showMessage(text, type = "error") {
+      inlineMsg.textContent = text; // textContent prevents XSS
+      inlineMsg.className = `inline-alert show ${type}`;
+      log(`Message shown: ${text} (${type})`);
+      setTimeout(() => inlineMsg.classList.remove("show"), 7000);
+    }
+
+    log("Page loaded successfully");
+
+    // Wallet connection
+    document.getElementById('wallet').addEventListener('click', async function() {
+      if (!window.ethereum) {
+        log("No Web3 wallet detected");
+        return;
+      }
+      try {
+        log("Requesting wallet connection...");
+        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+        if (accounts && accounts[0]) {
+          this.value = accounts[0];
+          log("Wallet connected: " + sanitizeText(accounts[0]));
+        }
+      } catch (err) {
+        log("Wallet connect error: " + sanitizeText(err.message));
+      }
+    });
+
+    // Form submission
+    document.getElementById("accessForm").addEventListener("submit", async function(e) {
+      e.preventDefault();
+      log("Form submitted");
       
-      const inlineMsg = document.getElementById("inlineMessage");
+      const btn = document.getElementById("submitBtn");
+      const twitterRaw = document.getElementById("twitter").value.trim().replace(/^@/, "");
+      const walletRaw = document.getElementById("wallet").value.trim();
+      const proofRaw = document.getElementById("proof").value.trim();
 
-      // XSS Protection: Sanitize text content
-      function sanitizeText(text) {
-        const div = document.createElement('div');
-        div.textContent = text;
-        return div.innerHTML;
+      // Client-side validation and sanitization
+      const twitter = twitterRaw.toLowerCase();
+      const wallet = walletRaw;
+      const proof = proofRaw;
+
+      log("Twitter: " + sanitizeText(twitter));
+      log("Wallet: " + sanitizeText(wallet));
+      log("Proof URL: " + sanitizeText(proof));
+
+      // Strict validation
+      if (!walletRegex.test(wallet)) {
+        log("Invalid wallet format");
+        return showMessage("Please enter a valid Ethereum wallet address (0x...)", "error");
       }
 
-      // Display message with sanitized content
-      function showMessage(text, type = "error") {
-        // Clear previous content
-        inlineMsg.textContent = '';
-        inlineMsg.className = `inline-alert show ${type}`;
-        
-        // Use textContent instead of innerHTML to prevent XSS
-        inlineMsg.textContent = text;
-        
-        setTimeout(() => inlineMsg.classList.remove("show"), 7000);
+      if (!twitterRegex.test(twitterRaw)) {
+        log("Invalid Twitter handle format");
+        return showMessage("Please enter a valid Twitter handle (1-15 alphanumeric characters and underscores)", "error");
       }
 
-      // Validate and sanitize inputs
-      function validateInputs(twitter, wallet, proof) {
-        // Validate Twitter handle
-        const cleanTwitter = twitter.replace(/^@/, '').toLowerCase();
-        if (!TWITTER_HANDLE_REGEX.test(cleanTwitter)) {
-          return { valid: false, error: "Invalid Twitter handle format" };
-        }
-
-        // Validate wallet
-        if (!WALLET_REGEX.test(wallet)) {
-          return { valid: false, error: "Invalid wallet address format" };
-        }
-
-        // Validate proof URL
-        if (!REPOST_REGEX.test(proof)) {
-          return { valid: false, error: "Invalid repost URL format" };
-        }
-
-        // Check if URL contains exhibitiondefi
-        if (!proof.toLowerCase().includes("exhibitiondefi")) {
-          return { valid: false, error: "Not a repost of @ExhibitionDeFi's post" };
-        }
-
-        // Ensure URL length is reasonable
-        if (proof.length > 200) {
-          return { valid: false, error: "URL too long" };
-        }
-
-        return { valid: true, twitter: cleanTwitter, wallet, proof };
+      const match = proof.match(repostRegex);
+      if (!match) {
+        log("Invalid repost URL format");
+        return showMessage("Please provide a valid repost URL like https://x.com/exhibitiondefi/status/123...", "error");
       }
 
-      // Wallet connection handler
-      const walletInput = document.getElementById('wallet');
-      if (walletInput) {
-        walletInput.addEventListener('click', async function() {
-          if (!window.ethereum) return;
-          
-          try {
-            const accounts = await window.ethereum.request({ 
-              method: 'eth_requestAccounts' 
-            });
-            
-            if (accounts && accounts[0] && WALLET_REGEX.test(accounts[0])) {
-              this.value = accounts[0];
-            }
-          } catch (err) {
-            console.warn("Wallet connection failed:", err.message);
-          }
+      if (!proof.toLowerCase().includes("exhibitiondefi")) {
+        log("URL does not contain 'exhibitiondefi'");
+        return showMessage("❌ Not a repost of @ExhibitionDeFi's pinned post.", "error");
+      }
+
+      const token = grecaptcha.getResponse();
+      if (!token) {
+        log("reCAPTCHA not completed");
+        return showMessage("Please complete the reCAPTCHA.", "error");
+      }
+      log("reCAPTCHA token obtained: " + token.substring(0, 20) + "...");
+
+      btn.disabled = true;
+      btn.textContent = "⏳ Submitting...";
+
+      const payload = { twitter, wallet, proof, token };
+      log("Sending POST to server");
+
+      try {
+        const res = await fetch(GOOGLE_SCRIPT_URL, {
+          method: "POST",
+          headers: { 
+            "Content-Type": "text/plain"
+          },
+          body: JSON.stringify(payload),
         });
+
+        log("Response status: " + res.status);
+        
+        const text = await res.text();
+        log("Response text: " + sanitizeText(text));
+
+        if (text === "success") {
+          showMessage("✅ Success! You're on the list.", "success");
+          this.reset();
+          grecaptcha.reset();
+        } else if (text === "duplicate") {
+          showMessage("⚠️ You have already registered.", "error");
+        } else if (text === "recaptcha_failed") {
+          showMessage("❌ reCAPTCHA verification failed. Please try again.", "error");
+          grecaptcha.reset();
+        } else if (text === "invalid_wallet") {
+          showMessage("❌ Invalid wallet address format.", "error");
+        } else if (text === "invalid_twitter") {
+          showMessage("❌ Invalid Twitter handle format.", "error");
+        } else if (text === "invalid_repost") {
+          showMessage("❌ Invalid repost URL.", "error");
+        } else {
+          showMessage("❌ Server error. Please try again.", "error");
+        }
+      } catch (err) {
+        log("Fetch error: " + sanitizeText(err.message));
+        showMessage("⚠️ Network error. Please try again.", "error");
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "🚀 Request Early Access";
+        log("Form submission complete");
       }
-
-      // Form submission handler
-      const form = document.getElementById("accessForm");
-      if (form) {
-        form.addEventListener("submit", async function(e) {
-          e.preventDefault();
-          
-          const btn = document.getElementById("submitBtn");
-          const twitterInput = document.getElementById("twitter");
-          const walletInput = document.getElementById("wallet");
-          const proofInput = document.getElementById("proof");
-
-          if (!btn || !twitterInput || !walletInput || !proofInput) {
-            showMessage("Form error. Please refresh the page.", "error");
-            return;
-          }
-
-          const twitter = twitterInput.value.trim();
-          const wallet = walletInput.value.trim();
-          const proof = proofInput.value.trim();
-
-          // Validate inputs
-          const validation = validateInputs(twitter, wallet, proof);
-          if (!validation.valid) {
-            showMessage(validation.error, "error");
-            return;
-          }
-
-          // Check reCAPTCHA
-          const token = typeof grecaptcha !== 'undefined' ? grecaptcha.getResponse() : '';
-          if (!token) {
-            showMessage("Please complete the reCAPTCHA.", "error");
-            return;
-          }
-
-          // Disable button during submission
-          btn.disabled = true;
-          btn.innerHTML = "<span>⏳ Submitting...</span>";
-
-          const payload = {
-            twitter: validation.twitter,
-            wallet: validation.wallet,
-            proof: validation.proof,
-            token: token
-          };
-
-          try {
-            const response = await fetch(GOOGLE_SCRIPT_URL, {
-              method: "POST",
-              headers: { 
-                "Content-Type": "text/plain"
-              },
-              body: JSON.stringify(payload),
-            });
-
-            const text = await response.text();
-
-            // Handle different response types
-            switch(text) {
-              case "success":
-                showMessage("✅ Success! You're on the list.", "success");
-                form.reset();
-                if (typeof grecaptcha !== 'undefined') {
-                  grecaptcha.reset();
-                }
-                break;
-              case "duplicate":
-                showMessage("⚠️ You have already registered.", "error");
-                break;
-              case "recaptcha_failed":
-                showMessage("❌ reCAPTCHA verification failed. Please try again.", "error");
-                if (typeof grecaptcha !== 'undefined') {
-                  grecaptcha.reset();
-                }
-                break;
-              case "invalid_wallet":
-                showMessage("❌ Invalid wallet address.", "error");
-                break;
-              case "invalid_repost":
-                showMessage("❌ Invalid repost URL.", "error");
-                break;
-              default:
-                showMessage("❌ Submission failed. Please try again.", "error");
-            }
-          } catch (err) {
-            console.error("Submission error:", err);
-            showMessage("⚠️ Network error. Please try again.", "error");
-          } finally {
-            btn.disabled = false;
-            btn.innerHTML = "<span>🚀 Request Early Access</span>";
-          }
-        });
-      }
-    })();
+    });
   </script>
 
   <script src="https://www.google.com/recaptcha/api.js" async defer></script>
