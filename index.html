@@ -408,6 +408,7 @@
     const twitterRegex = /^[a-zA-Z0-9_]{1,15}$/;
     const repostRegex = /^https?:\/\/(x|twitter)\.com\/([A-Za-z0-9_]{1,15})\/status\/([0-9]+)$/i;
     const inlineMsg = document.getElementById("inlineMessage");
+    const debugConsole = document.getElementById("debugConsole");
 
     // Sanitize text content to prevent XSS
     function sanitizeText(text) {
@@ -416,12 +417,24 @@
       return div.innerHTML;
     }
 
+    // Safe logging function
+    function log(message) {
+      const timestamp = new Date().toLocaleTimeString();
+      const sanitized = sanitizeText(String(message));
+      debugConsole.innerHTML += `[${timestamp}] ${sanitized}<br>`;
+      debugConsole.scrollTop = debugConsole.scrollHeight;
+      console.log(message);
+    }
+
     // Safe message display
     function showMessage(text, type = "error") {
       inlineMsg.textContent = text; // textContent prevents XSS
       inlineMsg.className = `inline-alert show ${type}`;
+      log(`Message shown: ${text} (${type})`);
       setTimeout(() => inlineMsg.classList.remove("show"), 7000);
     }
+
+    log("Page loaded successfully");
 
     // Wallet connection
     document.getElementById('wallet').addEventListener('click', async function() {
@@ -537,6 +550,7 @@
       }
     });
   </script>
+
   <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </body>
 </html>
