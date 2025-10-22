@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
+  <link rel="icon" href="/favicon-16x16.png" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Exhibition - The Future of Fair Launches</title>
-
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     :root {
@@ -17,6 +17,7 @@
       --charcoal: #0A0A0A;
       --dark-black: #000000;
     }
+
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background: var(--dark-black);
@@ -24,247 +25,368 @@
       overflow-x: hidden;
       padding-bottom: 4rem;
     }
-    header { text-align: center; padding: 5rem 2rem 2rem; background: radial-gradient(circle at center, var(--charcoal) 0%, var(--dark-black) 100%); }
-    header h1 { font-size: 2.4rem; background: linear-gradient(90deg, var(--neon-blue), var(--neon-orange)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
-    header p { margin-top: 1rem; color: var(--silver-dark); font-size: 1.1rem; }
-    .header-access-banner { margin-top: 3rem; padding: 2rem; background: rgba(21,198,230,0.08); border: 1px solid rgba(21,198,230,0.3); border-radius: 16px; max-width: 700px; margin-left: auto; margin-right: auto; }
-    .features-section { background: var(--deep-black); padding: 4rem 2rem 3rem; }
-    .features-header { text-align: center; margin-bottom: 3rem; }
-    .features-header h2 { font-size: 2.5rem; background: linear-gradient(90deg, var(--neon-blue), var(--neon-orange)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; font-weight: bold; }
-    .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 2rem; }
-    .feature-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: 12px; padding: 1.5rem; transition: transform 0.2s ease, border 0.2s ease; }
-    .feature-card:hover { transform: translateY(-5px); border-color: var(--neon-blue); }
-    .feature-icon { font-size: 1.8rem; margin-bottom: 0.8rem; }
-    .early-access { padding: 4rem 2rem; text-align: center; background: var(--charcoal); }
-    .access-title { font-size: 2.5rem; font-weight: bold; background: linear-gradient(90deg, var(--neon-blue), var(--neon-orange)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 0.8rem; animation: fadeIn 0.8s ease-out; }
-    .access-subtitle { font-size: 1.1rem; color: var(--silver-light); font-weight: 300; letter-spacing: 0.5px; }
-    .registration-form { margin: 0 auto; max-width: 640px; background: rgba(255,255,255,0.03); padding: 2rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.05); text-align: left; }
-    .intro-details { color: var(--silver-light); margin-bottom: 1rem; line-height:1.6; }
-    .intro-details h3 { margin-bottom: 8px; color: var(--neon-blue); }
-    .form-grid { display:grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-    .form-group { margin-bottom: 1rem; }
-    label { display:block; margin-bottom:0.4rem; color:var(--silver-light); font-weight:500; }
-    input[type="text"], input[type="url"], input[type="email"] { width:100%; padding:0.8rem; border-radius:8px; border:1px solid rgba(255,255,255,0.07); background:var(--deep-black); color:var(--silver-light); transition: border-color 0.2s; }
-    input:focus { outline: none; border-color: var(--neon-blue); }
-    .submit-btn { background: linear-gradient(90deg, var(--neon-blue), var(--neon-orange)); color: #fff; padding: 0.8rem 1.5rem; font-size: 1rem; border: none; border-radius: 8px; cursor: pointer; transition: opacity 0.2s; width: 100%; font-weight: 600; }
-    .submit-btn:disabled { opacity: 0.5; cursor:not-allowed; }
-    .submit-btn:hover:not(:disabled) { opacity: 0.9; }
-    .inline-alert { padding: 1rem; border-radius: 10px; margin-top: 1rem; display:none; }
-    .inline-alert.show { display:block; animation: slideIn 0.3s ease-out; }
-    .inline-alert.error { background: rgba(250,126,9,0.12); border: 1px solid var(--neon-orange); color: var(--neon-orange); }
-    .inline-alert.success { background: rgba(21,198,230,0.12); border: 1px solid var(--neon-blue); color: var(--neon-blue); }
-    .debug-console { margin-top: 1rem; padding: 1rem; background: rgba(0,0,0,0.5); border: 1px solid var(--silver-dark); border-radius: 8px; max-height: 120px; overflow-y:auto; font-family: monospace; font-size:0.85rem; color:#00ff00; }
-    .social-links { display: flex; justify-content: center; gap: 2rem; margin-bottom: 1.5rem; }
-    .social-links a { color: var(--neon-blue); text-decoration: none; font-size: 1.5rem; transition: color 0.2s; }
-    .social-links a:hover { color: var(--neon-orange); }
-    footer { text-align:center; padding:2rem; border-top:1px solid rgba(255,255,255,0.06); background:var(--deep-black); color:var(--silver-dark); }
-    @keyframes fadeIn { from { opacity:0; transform:translateY(10px) } to { opacity:1; transform:translateY(0) } }
-    @keyframes slideIn { from { opacity:0; transform:translateY(-10px) } to { opacity:1; transform:translateY(0) } }
-    @media (max-width:700px){
-      .form-grid { grid-template-columns: 1fr; }
-      .registration-form { padding:1rem; }
-      header h1 { font-size: 2rem; }
-      .access-title { font-size: 2rem; }
+
+    header {
+      text-align: center;
+      padding: 5rem 2rem 2rem;
+      background: radial-gradient(circle at center, var(--charcoal) 0%, var(--dark-black) 100%);
+    }
+
+    header h1 {
+      font-size: 2.4rem;
+      background: linear-gradient(90deg, var(--neon-blue), var(--neon-orange));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    header p {
+      margin-top: 1rem;
+      color: var(--silver-dark);
+      font-size: 1.1rem;
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+      gap: 2rem;
+      padding: 3rem 2rem;
+      background: var(--deep-black);
+    }
+
+    .feature-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 12px;
+      padding: 1.5rem;
+      transition: transform 0.2s ease, border 0.2s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--neon-blue);
+    }
+
+    .feature-icon {
+      font-size: 1.8rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .testnet-notice {
+      padding: 3rem 2rem;
+      background: rgba(255,255,255,0.05);
+      margin: 3rem 1rem;
+      border-left: 4px solid var(--neon-blue);
+      border-radius: 8px;
+    }
+
+    .early-access {
+      padding: 4rem 2rem;
+      text-align: center;
+      background: var(--charcoal);
+    }
+
+    .registration-form {
+      margin: 0 auto;
+      max-width: 480px;
+      background: rgba(255,255,255,0.05);
+      padding: 2rem;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+      text-align: left;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: var(--silver-light);
+      font-weight: 500;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 0.8rem;
+      border: 1px solid var(--silver-dark);
+      border-radius: 8px;
+      background: var(--deep-black);
+      color: var(--silver-light);
+      font-size: 1rem;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: var(--neon-blue);
+    }
+
+    .submit-btn {
+      background: linear-gradient(90deg, var(--neon-blue), var(--neon-orange));
+      color: #fff;
+      padding: 0.8rem 1.5rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: opacity 0.2s;
+      width: 100%;
+    }
+
+    .submit-btn:hover { opacity: 0.9; }
+    .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .inline-alert {
+      padding: 1rem;
+      border-radius: 10px;
+      margin-top: 1rem;
+      display: none;
+      animation: fadeIn 0.4s ease-out;
+    }
+
+    .inline-alert.show { display: block; }
+    .inline-alert.error {
+      background: rgba(250,126,9,0.15);
+      border: 1px solid var(--neon-orange);
+      color: var(--neon-orange);
+    }
+
+    .inline-alert.success {
+      background: rgba(21,198,230,0.15);
+      border: 1px solid var(--neon-blue);
+      color: var(--neon-blue);
+    }
+
+    .debug-console {
+      margin-top: 2rem;
+      padding: 1rem;
+      background: rgba(0,0,0,0.5);
+      border: 1px solid var(--silver-dark);
+      border-radius: 8px;
+      max-height: 200px;
+      overflow-y: auto;
+      font-family: monospace;
+      font-size: 0.85rem;
+      text-align: left;
+      color: #00ff00;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      background: var(--deep-black);
+    }
+
+    .social-links a {
+      color: var(--silver-light);
+      margin: 0 0.5rem;
+      font-size: 1.5rem;
+      text-decoration: none;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
+
 <body>
   <header>
     <h1>Exhibition Defi</h1>
     <p>Pioneering verifiable Fair Token Launches for the AI Era on Nexus</p>
-    <div class="header-access-banner">
-      <h2 class="access-title">Early Access Registration</h2>
-      <p class="access-subtitle">Join the Testnet Waitlist - Limited Spots Available</p>
-    </div>
   </header>
 
-  <section class="features-section">
-    <div class="features-header">
-      <h2>Why Choose Exhibition</h2>
-    </div>
-    <div class="features">
-      <div class="feature-card"><div class="feature-icon">🔒</div><h3>Liquidity Lock Enforcement</h3><p>Smart contract-enforced liquidity locks.</p></div>
-      <div class="feature-card"><div class="feature-icon">⚖️</div><h3>Fair Token Distribution</h3><p>Transparent vesting schedules with cliff periods. No surprises, no games.</p></div>
-      <div class="feature-card"><div class="feature-icon">🛡️</div><h3>Soft Cap Protection</h3><p>Projects must reach soft cap or all funds refunded automatically.</p></div>
-      <div class="feature-card"><div class="feature-icon">💎</div><h3>Automatic LP Creation</h3><p>Initial liquidity automatically added and locked securely.</p></div>
-      <div class="feature-card"><div class="feature-icon">🎯</div><h3>Hard Cap Limits</h3><p>Instant finalization when hard cap is reached. No manipulation.</p></div>
-      <div class="feature-card"><div class="feature-icon">🤖</div><h3>Built for AI Era</h3><p>Powered by Nexus Verifiable Layer Network for scalable AI computation.</p></div>
-    </div>
+  <section class="features">
+    <div class="feature-card"><div class="feature-icon">🔒</div><h3>Liquidity Lock Enforcement</h3><p>Smart contract-enforced liquidity locks.</p></div>
+    <div class="feature-card"><div class="feature-icon">⚖️</div><h3>Fair Token Distribution</h3><p>Transparent vesting schedules with cliff periods. No surprises, no games.</p></div>
+    <div class="feature-card"><div class="feature-icon">🛡️</div><h3>Soft Cap Protection</h3><p>Projects must reach soft cap or all funds refunded automatically.</p></div>
+    <div class="feature-card"><div class="feature-icon">💎</div><h3>Automatic LP Creation</h3><p>Initial liquidity automatically added and locked securely.</p></div>
+    <div class="feature-card"><div class="feature-icon">🎯</div><h3>Hard Cap Limits</h3><p>Instant finalization when hard cap is reached. No manipulation.</p></div>
+    <div class="feature-card"><div class="feature-icon">🤖</div><h3>Built for AI Era</h3><p>Powered by Nexus Verifiable Layer Network for scalable AI computation.</p></div>
   </section>
 
+  <div class="testnet-notice">
+    <h3>⚠️ Testnet Phase - Your Voice Matters</h3>
+    <p><strong>Current Configuration (Testnet Only):</strong></p>
+    <ul style="margin:1rem 0; padding-left:2rem; line-height:2;">
+      <li>Minimum liquidity lock: 14 days</li>
+      <li>Maximum project duration: 21 days</li>
+      <li>Minimum start delay: 15 minutes</li>
+    </ul>
+    <p><strong>These parameters are FOR TESTING ONLY.</strong> Community feedback during this phase will shape the final product.</p>
+  </div>
+
   <section class="early-access">
+    <h2>Get Early Access to Testnet</h2>
     <div class="registration-form">
-      <div class="intro-details">
-        <h3>What is Early Access?</h3>
-        <p>
-          Join the Exhibition Early Access program to test the platform, provide feedback, and secure a place on our testnet launch.
-          Please follow the steps above (follow, like/comment, repost) and paste your repost link below.
-        </p>
-        <p style="margin-top:8px; color:var(--silver-dark)">
-          ⚠️ Only verified reposts of our official pinned post (@ExhibitionDeFi) qualify. We will manually verify reposts and wallet ownership.
-        </p>
-      </div>
+      <h3 style="color:var(--neon-blue); margin-bottom:2rem;">Register for Early Access</h3>
 
       <form id="accessForm" autocomplete="off">
-        <div class="form-grid">
-          <div class="form-group">
-            <label for="twitter">Your X (Twitter) Handle *</label>
-            <input type="text" id="twitter" name="twitter" placeholder="@yourusername" required maxlength="16" />
-          </div>
-
-          <div class="form-group">
-            <label for="wallet">Your Wallet Address *</label>
-            <input type="text" id="wallet" name="wallet" placeholder="0x..." required pattern="^0x[a-fA-F0-9]{40}$" maxlength="42" />
-          </div>
-
-          <div class="form-group" style="grid-column:1 / -1;">
-            <label for="proof">Proof of Repost (Tweet URL) *</label>
-            <input type="url" id="proof" name="proof" placeholder="https://x.com/yourusername/status/..." required maxlength="200" />
-          </div>
+        <div class="form-group">
+          <label for="twitter">Your X (Twitter) Handle *</label>
+          <input type="text" id="twitter" name="twitter" placeholder="@yourusername" required autocomplete="off" />
         </div>
 
-        <input type="text" name="website" id="website_hp" style="display:none" tabindex="-1" autocomplete="off" />
+        <div class="form-group">
+          <label for="wallet">Your Wallet Address *</label>
+          <input type="text" id="wallet" name="wallet" placeholder="0x..." required pattern="^0x[a-fA-F0-9]{40}$" inputmode="text" autocomplete="off" />
+          <small style="color:var(--silver-dark);">Click to connect wallet (optional)</small>
+        </div>
 
-        <button type="submit" class="submit-btn" id="submitBtn">🚀 Request Early Access</button>
+        <div class="form-group">
+          <label for="proof">Proof of Repost (Tweet URL) *</label>
+          <input type="url" id="proof" name="proof" placeholder="https://x.com/yourusername/status/..." required autocomplete="off" />
+        </div>
+
+        <div class="g-recaptcha" data-sitekey="6LfQ-vArAAAAAN3L3Qug7MHQg_50xGFgvdiTKVzG"></div>
+
+        <button type="submit" class="submit-btn" id="submitBtn"><span>🚀 Request Early Access</span></button>
 
         <div id="inlineMessage" class="inline-alert"></div>
-        <div id="debugConsole" class="debug-console" aria-hidden="true"></div>
+        
+        <div id="debugConsole" class="debug-console"></div>
       </form>
     </div>
   </section>
 
   <footer>
     <div class="social-links">
-      <a href="https://x.com/ExhibitionDeFi" target="_blank" rel="noopener noreferrer" title="X (Twitter)">𝕏</a>
+      <a href="https://x.com/ExhibitionDeFi" target="_blank" title="X (Twitter)">𝕏</a>
       <a href="#" title="Discord">💬</a>
       <a href="#" title="Telegram">✈️</a>
-      <a href="https://github.com/ExhibitionDefi" target="_blank" rel="noopener noreferrer" title="GitHub">💻</a>
+      <a href="https://github.com/ExhibitionDefi" title="GitHub">💻</a>
     </div>
     <p style="color:var(--silver-dark);">Built on Nexus Verifiable Layer Network | Testnet Phase | Community-Driven Development</p>
     <p style="color:var(--silver-dark); margin-top:1rem; font-size:0.9rem;">© 2025 Exhibition Defi</p>
   </footer>
 
   <script>
-    const inlineMsg = document.getElementById('inlineMessage');
-    const debugConsole = document.getElementById('debugConsole');
-
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz-_LxDYYDdS7E4e5VtGq_aDTDHT3GZt5urocqCIICGZnvLdZKZ2H9aVYfv08n5zSlbrg/exec";
     const walletRegex = /^0x[a-fA-F0-9]{40}$/;
-    const twitterRegex = /^[A-Za-z0-9_]{1,15}$/;
-    const repostRegex = /^https?:\/\/(x|twitter)\.com\/[A-Za-z0-9_]{1,15}\/status\/[0-9]+$/i;
-    const XSS_PATTERNS = [ /<script/i, /javascript:/i, /on\w+=/i, /<iframe/i ];
+    const repostRegex = /^https?:\/\/(x|twitter)\.com\/([A-Za-z0-9_]{1,15})\/status\/([0-9]+)/i;
+    const inlineMsg = document.getElementById("inlineMessage");
+    const debugConsole = document.getElementById("debugConsole");
 
-    // Store submissions in memory (simulated backend)
-    let submissions = [];
-
-    function log(msg){
-      const ts = new Date().toLocaleTimeString();
-      debugConsole.innerHTML += `[${ts}] ${String(msg).replace(/</g,'&lt;')}<br>`;
+    function log(message) {
+      const timestamp = new Date().toLocaleTimeString();
+      debugConsole.innerHTML += `[${timestamp}] ${message}<br>`;
       debugConsole.scrollTop = debugConsole.scrollHeight;
-      console.log(msg);
+      console.log(message);
     }
 
-    function showMessage(text, type='error'){
+    function showMessage(text, type = "error") {
       inlineMsg.textContent = text;
-      inlineMsg.className = 'inline-alert show ' + (type === 'success' ? 'success' : 'error');
-      setTimeout(()=> inlineMsg.classList.remove('show'), 7000);
-      log(`Message shown: ${text}`);
+      inlineMsg.className = `inline-alert show ${type}`;
+      log(`Message shown: ${text} (${type})`);
+      setTimeout(() => inlineMsg.classList.remove("show"), 7000);
     }
 
-    function detectXSS(value){
-      if(!value) return false;
-      for(const p of XSS_PATTERNS) if(p.test(value)) return true;
-      return false;
-    }
+    log("Page loaded successfully");
 
-    document.getElementById('accessForm').addEventListener('submit', async function(e){
-      e.preventDefault();
-      
-      const twitter = (document.getElementById('twitter').value || '').trim().replace(/^@/, '');
-      const wallet = (document.getElementById('wallet').value || '').trim();
-      const proof = (document.getElementById('proof').value || '').trim();
-      const hp = (document.getElementById('website_hp').value || '').trim();
-
-      // Honeypot check
-      if(hp){
-        showMessage('Bot detected. Submission blocked.', 'error');
-        log('Honeypot blocked submission');
+    document.getElementById('wallet').addEventListener('click', async function() {
+      if (!window.ethereum) {
+        log("No Web3 wallet detected");
         return;
       }
-
-      // XSS detection
-      if(detectXSS(twitter) || detectXSS(wallet) || detectXSS(proof)){
-        showMessage('Invalid characters detected. Please remove special characters.', 'error');
-        return;
+      try {
+        log("Requesting wallet connection...");
+        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+        if (accounts && accounts[0]) {
+          this.value = accounts[0];
+          log("Wallet connected: " + accounts[0]);
+        }
+      } catch (err) {
+        log("Wallet connect error: " + err.message);
       }
-
-      // Validate Twitter handle
-      if(!twitterRegex.test(twitter)){
-        showMessage('Please enter a valid X handle (alphanumeric or underscore).', 'error');
-        return;
-      }
-
-      // Validate wallet
-      if(!walletRegex.test(wallet)){
-        showMessage('Please enter a valid wallet address (0x...).', 'error');
-        return;
-      }
-
-      // Validate repost URL
-      if(!repostRegex.test(proof)){
-        showMessage('Please provide a valid tweet URL.', 'error');
-        return;
-      }
-
-      if(!proof.toLowerCase().includes('exhibitiondefi')){
-        showMessage('Please provide a repost of @ExhibitionDeFi official post.', 'error');
-        return;
-      }
-
-      // Check for duplicates
-      const walletExists = submissions.some(s => s.wallet.toLowerCase() === wallet.toLowerCase());
-      const twitterExists = submissions.some(s => s.twitter.toLowerCase() === twitter.toLowerCase());
-
-      if(walletExists){
-        showMessage('This wallet address has already been registered.', 'error');
-        return;
-      }
-
-      if(twitterExists){
-        showMessage('This X handle has already been registered.', 'error');
-        return;
-      }
-
-      // Show loading state
-      const btn = document.getElementById('submitBtn');
-      btn.disabled = true;
-      btn.textContent = '⏳ Submitting...';
-
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
-
-      // Store submission
-      const submission = {
-        wallet,
-        twitter,
-        proof,
-        timestamp: new Date().toISOString(),
-        status: 'PENDING'
-      };
-      submissions.push(submission);
-
-      log(`Submission stored: ${twitter} | ${wallet.substring(0,8)}...`);
-      
-      showMessage('✅ Registration successful! Your submission is pending verification. We will contact you on X.', 'success');
-      
-      // Reset form
-      document.getElementById('accessForm').reset();
-      
-      // Reset button
-      btn.disabled = false;
-      btn.textContent = '🚀 Request Early Access';
     });
 
-    log('Page loaded successfully. Registration system ready.');
+    document.getElementById("accessForm").addEventListener("submit", async function(e) {
+      e.preventDefault();
+      log("Form submitted");
+      
+      const btn = document.getElementById("submitBtn");
+      const twitter = document.getElementById("twitter").value.trim().replace(/^@/, "").toLowerCase();
+      const wallet = document.getElementById("wallet").value.trim();
+      const proof = document.getElementById("proof").value.trim();
+
+      log("Twitter: " + twitter);
+      log("Wallet: " + wallet);
+      log("Proof URL: " + proof);
+
+      // Client-side validation
+      if (!walletRegex.test(wallet)) {
+        log("Invalid wallet format");
+        return showMessage("Please enter a valid Ethereum wallet address (0x...)", "error");
+      }
+
+      const match = proof.match(repostRegex);
+      if (!match) {
+        log("Invalid repost URL format");
+        return showMessage("Please provide a valid repost URL like https://x.com/exhibitiondefi/status/123...", "error");
+      }
+
+      if (!proof.toLowerCase().includes("exhibitiondefi")) {
+        log("URL does not contain 'exhibitiondefi'");
+        return showMessage("❌ Not a repost of @ExhibitionDeFi's pinned post.", "error");
+      }
+
+      const token = grecaptcha.getResponse();
+      if (!token) {
+        log("reCAPTCHA not completed");
+        return showMessage("Please complete the reCAPTCHA.", "error");
+      }
+      log("reCAPTCHA token obtained: " + token.substring(0, 20) + "...");
+
+      btn.disabled = true;
+      btn.innerHTML = "<span>⏳ Submitting...</span>";
+
+      const payload = { twitter, wallet, proof, token };
+      log("Payload: " + JSON.stringify(payload));
+      log("Sending POST to: " + GOOGLE_SCRIPT_URL);
+
+      try {
+        const res = await fetch(GOOGLE_SCRIPT_URL, {
+          method: "POST",
+          headers: { 
+            "Content-Type": "text/plain"
+          },
+          body: JSON.stringify(payload),
+        });
+
+        log("Response status: " + res.status);
+        
+        const text = await res.text();
+        log("Response text: " + text);
+
+        if (text === "success") {
+          showMessage("✅ Success! You're on the list.", "success");
+          this.reset();
+          grecaptcha.reset();
+        } else if (text === "duplicate") {
+          showMessage("⚠️ You have already registered.", "error");
+        } else if (text === "recaptcha_failed") {
+          showMessage("❌ reCAPTCHA verification failed. Please try again.", "error");
+          grecaptcha.reset();
+        } else if (text === "invalid_wallet") {
+          showMessage("❌ Invalid wallet address format.", "error");
+        } else {
+          showMessage("❌ Server returned: " + text, "error");
+        }
+      } catch (err) {
+        log("Fetch error: " + err.message);
+        log("Error stack: " + err.stack);
+        showMessage("⚠️ Network error: " + err.message, "error");
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = "<span>🚀 Request Early Access</span>";
+        log("Form submission complete");
+      }
+    });
   </script>
+
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </body>
 </html>
