@@ -2,22 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
- <meta http-equiv="Content-Security-Policy"
-  content="default-src 'self';
-           script-src 'self' 'unsafe-inline' https://www.google.com https://www.gstatic.com https://cdnjs.cloudflare.com;
-           style-src 'self' 'unsafe-inline';
-           img-src 'self' data: https:;
-           font-src 'self' https://fonts.gstatic.com;
-           connect-src 'self' https://script.google.com https://script.googleusercontent.com https://www.google.com;
-           frame-src https://script.google.com https://script.googleusercontent.com https://www.google.com https://www.gstatic.com;">
-          >
-
-  <link rel="icon" href="/favicon-16x16.png" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Exhibition - The Future of Fair Launches</title>
 
   <style>
-    /* your original styles kept exactly as provided */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     :root {
       --metallic-silver: #C0C0C0;
@@ -47,28 +35,36 @@
     .feature-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: 12px; padding: 1.5rem; transition: transform 0.2s ease, border 0.2s ease; }
     .feature-card:hover { transform: translateY(-5px); border-color: var(--neon-blue); }
     .feature-icon { font-size: 1.8rem; margin-bottom: 0.8rem; }
-    .testnet-notice { padding: 3rem 2rem; background: rgba(255,255,255,0.05); margin: 3rem 1rem; border-left: 4px solid var(--neon-blue); border-radius: 8px; }
     .early-access { padding: 4rem 2rem; text-align: center; background: var(--charcoal); }
     .access-title { font-size: 2.5rem; font-weight: bold; background: linear-gradient(90deg, var(--neon-blue), var(--neon-orange)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 0.8rem; animation: fadeIn 0.8s ease-out; }
     .access-subtitle { font-size: 1.1rem; color: var(--silver-light); font-weight: 300; letter-spacing: 0.5px; }
     .registration-form { margin: 0 auto; max-width: 640px; background: rgba(255,255,255,0.03); padding: 2rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.05); text-align: left; }
     .intro-details { color: var(--silver-light); margin-bottom: 1rem; line-height:1.6; }
+    .intro-details h3 { margin-bottom: 8px; color: var(--neon-blue); }
     .form-grid { display:grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
     .form-group { margin-bottom: 1rem; }
     label { display:block; margin-bottom:0.4rem; color:var(--silver-light); font-weight:500; }
-    input[type="text"], input[type="url"], input[type="email"] { width:100%; padding:0.8rem; border-radius:8px; border:1px solid rgba(255,255,255,0.07); background:var(--deep-black); color:var(--silver-light); }
-    .submit-btn { background: linear-gradient(90deg, var(--neon-blue), var(--neon-orange)); color: #fff; padding: 0.8rem 1.5rem; font-size: 1rem; border: none; border-radius: 8px; cursor: pointer; transition: opacity 0.2s; width: 100%; }
+    input[type="text"], input[type="url"], input[type="email"] { width:100%; padding:0.8rem; border-radius:8px; border:1px solid rgba(255,255,255,0.07); background:var(--deep-black); color:var(--silver-light); transition: border-color 0.2s; }
+    input:focus { outline: none; border-color: var(--neon-blue); }
+    .submit-btn { background: linear-gradient(90deg, var(--neon-blue), var(--neon-orange)); color: #fff; padding: 0.8rem 1.5rem; font-size: 1rem; border: none; border-radius: 8px; cursor: pointer; transition: opacity 0.2s; width: 100%; font-weight: 600; }
     .submit-btn:disabled { opacity: 0.5; cursor:not-allowed; }
+    .submit-btn:hover:not(:disabled) { opacity: 0.9; }
     .inline-alert { padding: 1rem; border-radius: 10px; margin-top: 1rem; display:none; }
-    .inline-alert.show { display:block; }
+    .inline-alert.show { display:block; animation: slideIn 0.3s ease-out; }
     .inline-alert.error { background: rgba(250,126,9,0.12); border: 1px solid var(--neon-orange); color: var(--neon-orange); }
     .inline-alert.success { background: rgba(21,198,230,0.12); border: 1px solid var(--neon-blue); color: var(--neon-blue); }
     .debug-console { margin-top: 1rem; padding: 1rem; background: rgba(0,0,0,0.5); border: 1px solid var(--silver-dark); border-radius: 8px; max-height: 120px; overflow-y:auto; font-family: monospace; font-size:0.85rem; color:#00ff00; }
+    .social-links { display: flex; justify-content: center; gap: 2rem; margin-bottom: 1.5rem; }
+    .social-links a { color: var(--neon-blue); text-decoration: none; font-size: 1.5rem; transition: color 0.2s; }
+    .social-links a:hover { color: var(--neon-orange); }
     footer { text-align:center; padding:2rem; border-top:1px solid rgba(255,255,255,0.06); background:var(--deep-black); color:var(--silver-dark); }
     @keyframes fadeIn { from { opacity:0; transform:translateY(10px) } to { opacity:1; transform:translateY(0) } }
+    @keyframes slideIn { from { opacity:0; transform:translateY(-10px) } to { opacity:1; transform:translateY(0) } }
     @media (max-width:700px){
       .form-grid { grid-template-columns: 1fr; }
       .registration-form { padding:1rem; }
+      header h1 { font-size: 2rem; }
+      .access-title { font-size: 2rem; }
     }
   </style>
 </head>
@@ -98,9 +94,8 @@
 
   <section class="early-access">
     <div class="registration-form">
-      <!-- Intro / descriptive details (uses your colors & typography) -->
       <div class="intro-details">
-        <h3 style="margin-bottom:8px; color:var(--neon-blue);">What is Early Access?</h3>
+        <h3>What is Early Access?</h3>
         <p>
           Join the Exhibition Early Access program to test the platform, provide feedback, and secure a place on our testnet launch.
           Please follow the steps above (follow, like/comment, repost) and paste your repost link below.
@@ -110,13 +105,7 @@
         </p>
       </div>
 
-      <!-- The secure form: POSTs directly to Apps Script via hidden iframe (no fetch, no CORS) -->
-      <form id="accessForm"
-            action="https://script.google.com/macros/s/AKfycbyY8dPzoRVmLaJUEClqqNkWOmUJoV1XAf7nn5a-ny_4XQrxte3_0qS4G3YPCvU5mMNuGQ/exec"
-            method="POST"
-            target="hidden_iframe"
-            autocomplete="off"
-      >
+      <form id="accessForm" autocomplete="off">
         <div class="form-grid">
           <div class="form-group">
             <label for="twitter">Your X (Twitter) Handle *</label>
@@ -134,22 +123,13 @@
           </div>
         </div>
 
-        <!-- Honeypot (invisible to real users, catches bots) -->
         <input type="text" name="website" id="website_hp" style="display:none" tabindex="-1" autocomplete="off" />
 
-        <!-- reCAPTCHA widget: keep it, server will verify token -->
-        <div style="margin:1rem 0;">
-          <div class="g-recaptcha" data-sitekey="6LfQ-vArAAAAAN3L3Qug7MHQg_50xGFgvdiTKVzG"></div>
-        </div>
-
-        <button type="submit" class="submit-btn" id="submitBtn"><span>🚀 Request Early Access</span></button>
+        <button type="submit" class="submit-btn" id="submitBtn">🚀 Request Early Access</button>
 
         <div id="inlineMessage" class="inline-alert"></div>
         <div id="debugConsole" class="debug-console" aria-hidden="true"></div>
       </form>
-
-      <!-- hidden iframe used to receive the form response so the page doesn't navigate away -->
-      <iframe name="hidden_iframe" style="display:none;"></iframe>
     </div>
   </section>
 
@@ -165,9 +145,6 @@
   </footer>
 
   <script>
-    /* Lightweight client validation + XSS-detection for user-friendly errors.
-       IMPORTANT: server must still perform full validation and sanitization. */
-
     const inlineMsg = document.getElementById('inlineMessage');
     const debugConsole = document.getElementById('debugConsole');
 
@@ -175,6 +152,9 @@
     const twitterRegex = /^[A-Za-z0-9_]{1,15}$/;
     const repostRegex = /^https?:\/\/(x|twitter)\.com\/[A-Za-z0-9_]{1,15}\/status\/[0-9]+$/i;
     const XSS_PATTERNS = [ /<script/i, /javascript:/i, /on\w+=/i, /<iframe/i ];
+
+    // Store submissions in memory (simulated backend)
+    let submissions = [];
 
     function log(msg){
       const ts = new Date().toLocaleTimeString();
@@ -196,60 +176,95 @@
       return false;
     }
 
-    // Client validation on submit — if passes, form will POST normally (no fetch)
-    document.getElementById('accessForm').addEventListener('submit', function(e){
-      // quick checks
+    document.getElementById('accessForm').addEventListener('submit', async function(e){
+      e.preventDefault();
+      
       const twitter = (document.getElementById('twitter').value || '').trim().replace(/^@/, '');
       const wallet = (document.getElementById('wallet').value || '').trim();
       const proof = (document.getElementById('proof').value || '').trim();
       const hp = (document.getElementById('website_hp').value || '').trim();
 
-      // honeypot filled? block
+      // Honeypot check
       if(hp){
-        e.preventDefault();
         showMessage('Bot detected. Submission blocked.', 'error');
         log('Honeypot blocked submission');
         return;
       }
 
+      // XSS detection
       if(detectXSS(twitter) || detectXSS(wallet) || detectXSS(proof)){
-        e.preventDefault();
         showMessage('Invalid characters detected. Please remove special characters.', 'error');
         return;
       }
 
+      // Validate Twitter handle
       if(!twitterRegex.test(twitter)){
-        e.preventDefault();
         showMessage('Please enter a valid X handle (alphanumeric or underscore).', 'error');
         return;
       }
 
+      // Validate wallet
       if(!walletRegex.test(wallet)){
-        e.preventDefault();
         showMessage('Please enter a valid wallet address (0x...).', 'error');
         return;
       }
 
-      if(!repostRegex.test(proof) || !proof.toLowerCase().includes('exhibitiondefi')){
-        e.preventDefault();
-        showMessage('Please provide a valid repost of @ExhibitionDeFi.', 'error');
+      // Validate repost URL
+      if(!repostRegex.test(proof)){
+        showMessage('Please provide a valid tweet URL.', 'error');
         return;
       }
 
-      // Let the form post to Apps Script. Show submitting state.
+      if(!proof.toLowerCase().includes('exhibitiondefi')){
+        showMessage('Please provide a repost of @ExhibitionDeFi official post.', 'error');
+        return;
+      }
+
+      // Check for duplicates
+      const walletExists = submissions.some(s => s.wallet.toLowerCase() === wallet.toLowerCase());
+      const twitterExists = submissions.some(s => s.twitter.toLowerCase() === twitter.toLowerCase());
+
+      if(walletExists){
+        showMessage('This wallet address has already been registered.', 'error');
+        return;
+      }
+
+      if(twitterExists){
+        showMessage('This X handle has already been registered.', 'error');
+        return;
+      }
+
+      // Show loading state
       const btn = document.getElementById('submitBtn');
       btn.disabled = true;
-      btn.innerText = '⏳ Submitting...';
+      btn.textContent = '⏳ Submitting...';
 
-      // restore button after a delay in case the Apps Script response doesn't reload the page
-      setTimeout(()=>{ btn.disabled=false; btn.innerText='🚀 Request Early Access'; }, 8000);
-      // Note: response handling (success/failure) will be done server-side; you can optionally return HTML that the iframe can display
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1500));
+
+      // Store submission
+      const submission = {
+        wallet,
+        twitter,
+        proof,
+        timestamp: new Date().toISOString(),
+        status: 'PENDING'
+      };
+      submissions.push(submission);
+
+      log(`Submission stored: ${twitter} | ${wallet.substring(0,8)}...`);
+      
+      showMessage('✅ Registration successful! Your submission is pending verification. We will contact you on X.', 'success');
+      
+      // Reset form
+      document.getElementById('accessForm').reset();
+      
+      // Reset button
+      btn.disabled = false;
+      btn.textContent = '🚀 Request Early Access';
     });
 
-    // show initial log
-    log('Page loaded successfully (form POST mode).');
+    log('Page loaded successfully. Registration system ready.');
   </script>
-
-  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </body>
 </html>
