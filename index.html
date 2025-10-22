@@ -296,6 +296,7 @@
       from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
     }
+
   </style>
 </head>
 
@@ -308,18 +309,19 @@
       <p class="access-subtitle">Join the Testnet Waitlist - Limited Spots Available</p>
     </div>
   </header>
-  </header>
 
- <section class="features-section">
+  <section class="features-section">
     <div class="features-header">
       <h2>Why Choose Exhibition</h2>
     </div>
-    <div class="feature-card"><div class="feature-icon">🔒</div><h3>Liquidity Lock Enforcement</h3><p>Smart contract-enforced liquidity locks (minimum 14 days on testnet).</p></div>
-    <div class="feature-card"><div class="feature-icon">⚖️</div><h3>Fair Token Distribution</h3><p>Transparent vesting schedules with cliff periods. No surprises, no games.</p></div>
-    <div class="feature-card"><div class="feature-icon">🛡️</div><h3>Soft Cap Protection</h3><p>Projects must reach soft cap or all funds refunded automatically.</p></div>
-    <div class="feature-card"><div class="feature-icon">💎</div><h3>Automatic LP Creation</h3><p>Initial liquidity automatically added and locked securely.</p></div>
-    <div class="feature-card"><div class="feature-icon">🎯</div><h3>Hard Cap Limits</h3><p>Instant finalization when hard cap is reached. No manipulation.</p></div>
-    <div class="feature-card"><div class="feature-icon">🤖</div><h3>Built for AI Era</h3><p>Powered by Nexus Verifiable Layer Network for scalable AI computation.</p></div>
+    <div class="features">
+      <div class="feature-card"><div class="feature-icon">🔒</div><h3>Liquidity Lock Enforcement</h3><p>Smart contract-enforced liquidity locks (minimum 14 days on testnet).</p></div>
+      <div class="feature-card"><div class="feature-icon">⚖️</div><h3>Fair Token Distribution</h3><p>Transparent vesting schedules with cliff periods. No surprises, no games.</p></div>
+      <div class="feature-card"><div class="feature-icon">🛡️</div><h3>Soft Cap Protection</h3><p>Projects must reach soft cap or all funds refunded automatically.</p></div>
+      <div class="feature-card"><div class="feature-icon">💎</div><h3>Automatic LP Creation</h3><p>Initial liquidity automatically added and locked securely.</p></div>
+      <div class="feature-card"><div class="feature-icon">🎯</div><h3>Hard Cap Limits</h3><p>Instant finalization when hard cap is reached. No manipulation.</p></div>
+      <div class="feature-card"><div class="feature-icon">🤖</div><h3>Built for AI Era</h3><p>Powered by Nexus Verifiable Layer Network for scalable AI computation.</p></div>
+    </div>
   </section>
 
   <div class="testnet-notice">
@@ -333,33 +335,34 @@
     <p><strong>These parameters are FOR TESTING ONLY.</strong> Community feedback during this phase will shape the final product.</p>
   </div>
 
-  <div class="steps-container">
-    <h4 style="color:var(--silver-light); margin-bottom:1rem; font-size:1rem;">Complete These Steps First:</h4>
-    <div class="step-item">
-      <span class="step-number">1</span>
-      <div class="step-content">
-        <strong>Follow @ExhibitionDeFi</strong>
-        <a href="https://x.com/exhibitiondefi" target="_blank" rel="noopener" class="step-link">Visit Profile →</a>
-      </div>
-    </div>
-    <div class="step-item">
-      <span class="step-number">2</span>
-      <div class="step-content">
-        <strong>Like & Comment on Pinned Post</strong>
-        <a href="https://x.com/exhibitiondefi/status/1979344321255006386" target="_blank" rel="noopener" class="step-link">View Post →</a>
-      </div>
-    </div>
-    <div class="step-item">
-      <span class="step-number">3</span>
-      <div class="step-content">
-        <strong>Repost the Pinned Post</strong>
-        <a href="https://x.com/exhibitiondefi/status/1979344321255006386" target="_blank" rel="noopener" class="step-link">Repost Now →</a>
-      </div>
-    </div>
-  </div>
-
   <section class="early-access">
     <h2>Get Early Access to Testnet</h2>
+    
+    <div class="steps-container">
+      <h4 style="color:var(--silver-light); margin-bottom:1rem; font-size:1rem;">Complete These Steps First:</h4>
+      <div class="step-item">
+        <span class="step-number">1</span>
+        <div class="step-content">
+          <strong>Follow @ExhibitionDeFi</strong>
+          <a href="https://x.com/exhibitiondefi" target="_blank" rel="noopener" class="step-link">Visit Profile →</a>
+        </div>
+      </div>
+      <div class="step-item">
+        <span class="step-number">2</span>
+        <div class="step-content">
+          <strong>Like & Comment on Pinned Post</strong>
+          <a href="https://x.com/exhibitiondefi/status/1979344321255006386" target="_blank" rel="noopener" class="step-link">View Post →</a>
+        </div>
+      </div>
+      <div class="step-item">
+        <span class="step-number">3</span>
+        <div class="step-content">
+          <strong>Repost the Pinned Post</strong>
+          <a href="https://x.com/exhibitiondefi/status/1979344321255006386" target="_blank" rel="noopener" class="step-link">Repost Now →</a>
+        </div>
+      </div>
+    </div>
+
     <div class="registration-form">
       <h3 style="color:var(--neon-blue); margin-bottom:2rem;">Register for Early Access (Debug Mode)</h3>
 
@@ -417,8 +420,9 @@
       return div.innerHTML;
     }
 
-    // Safe logging function
+    // Safe logging function - DEFINED FIRST
     function log(message) {
+      if (!debugConsole) return;
       const timestamp = new Date().toLocaleTimeString();
       const sanitized = sanitizeText(String(message));
       debugConsole.innerHTML += `[${timestamp}] ${sanitized}<br>`;
@@ -428,7 +432,8 @@
 
     // Safe message display
     function showMessage(text, type = "error") {
-      inlineMsg.textContent = text; // textContent prevents XSS
+      if (!inlineMsg) return;
+      inlineMsg.textContent = text;
       inlineMsg.className = `inline-alert show ${type}`;
       log(`Message shown: ${text} (${type})`);
       setTimeout(() => inlineMsg.classList.remove("show"), 7000);
