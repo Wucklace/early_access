@@ -47,6 +47,36 @@
       font-size: 1.1rem;
     }
 
+    .header-access-banner {
+      margin-top: 3rem;
+      padding: 2rem;
+      background: rgba(21,198,230,0.08);
+      border: 1px solid rgba(21,198,230,0.3);
+      border-radius: 16px;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .features-section {
+      background: var(--deep-black);
+      padding: 4rem 2rem 3rem;
+    }
+
+    .features-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .features-header h2 {
+      font-size: 2.5rem;
+      background: linear-gradient(90deg, var(--neon-blue), var(--neon-orange));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: bold;
+    }
+
     .features {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
@@ -198,9 +228,17 @@
   <header>
     <h1>Exhibition Defi</h1>
     <p>Pioneering verifiable Fair Token Launches for the AI Era on Nexus</p>
+    <div class="header-access-banner">
+      <h2 class="access-title">Early Access Registration</h2>
+      <p class="access-subtitle">Join the Testnet Waitlist - Limited Spots Available</p>
+    </div>
+  </header>
   </header>
 
-  <section class="features">
+ <section class="features-section">
+    <div class="features-header">
+      <h2>Why Choose Exhibition</h2>
+    </div>
     <div class="feature-card"><div class="feature-icon">🔒</div><h3>Liquidity Lock Enforcement</h3><p>Smart contract-enforced liquidity locks (minimum 14 days on testnet).</p></div>
     <div class="feature-card"><div class="feature-icon">⚖️</div><h3>Fair Token Distribution</h3><p>Transparent vesting schedules with cliff periods. No surprises, no games.</p></div>
     <div class="feature-card"><div class="feature-icon">🛡️</div><h3>Soft Cap Protection</h3><p>Projects must reach soft cap or all funds refunded automatically.</p></div>
