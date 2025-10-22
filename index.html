@@ -77,6 +77,24 @@
       font-weight: bold;
     }
 
+    .access-title {
+      font-size: 2.5rem;
+      font-weight: bold;
+      background: linear-gradient(90deg, var(--neon-blue), var(--neon-orange));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.8rem;
+      animation: fadeIn 0.8s ease-out;
+    }
+
+    .access-subtitle {
+      font-size: 1.1rem;
+      color: var(--silver-light);
+      font-weight: 300;
+      letter-spacing: 0.5px;
+    }
+
     .features {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
@@ -115,6 +133,77 @@
       padding: 4rem 2rem;
       text-align: center;
       background: var(--charcoal);
+    }
+
+    .steps-container {
+      background: rgba(21,198,230,0.05);
+      border: 1px solid rgba(21,198,230,0.2);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      text-align: left;
+    }
+
+    .step-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 1.2rem;
+      padding: 0.8rem;
+      background: rgba(0,0,0,0.3);
+      border-radius: 8px;
+      transition: all 0.3s ease;
+    }
+
+    .step-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .step-item:hover {
+      background: rgba(21,198,230,0.08);
+      transform: translateX(5px);
+    }
+
+    .step-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      min-width: 32px;
+      background: linear-gradient(135deg, var(--neon-blue), var(--neon-orange));
+      color: #fff;
+      border-radius: 50%;
+      font-weight: bold;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+
+    .step-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .step-content strong {
+      color: var(--silver-light);
+      font-size: 0.95rem;
+    }
+
+    .step-link {
+      color: var(--neon-blue);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .step-link:hover {
+      color: var(--neon-orange);
+      text-decoration: underline;
     }
 
     .registration-form {
@@ -189,20 +278,6 @@
       color: var(--neon-blue);
     }
 
-    .debug-console {
-      margin-top: 2rem;
-      padding: 1rem;
-      background: rgba(0,0,0,0.5);
-      border: 1px solid var(--silver-dark);
-      border-radius: 8px;
-      max-height: 200px;
-      overflow-y: auto;
-      font-family: monospace;
-      font-size: 0.85rem;
-      text-align: left;
-      color: #00ff00;
-    }
-
     footer {
       text-align: center;
       padding: 2rem;
@@ -258,6 +333,31 @@
     <p><strong>These parameters are FOR TESTING ONLY.</strong> Community feedback during this phase will shape the final product.</p>
   </div>
 
+  <div class="steps-container">
+    <h4 style="color:var(--silver-light); margin-bottom:1rem; font-size:1rem;">Complete These Steps First:</h4>
+    <div class="step-item">
+      <span class="step-number">1</span>
+      <div class="step-content">
+        <strong>Follow @ExhibitionDeFi</strong>
+        <a href="https://x.com/exhibitiondefi" target="_blank" rel="noopener" class="step-link">Visit Profile →</a>
+      </div>
+    </div>
+    <div class="step-item">
+      <span class="step-number">2</span>
+      <div class="step-content">
+        <strong>Like & Comment on Pinned Post</strong>
+        <a href="https://x.com/exhibitiondefi/status/1979344321255006386" target="_blank" rel="noopener" class="step-link">View Post →</a>
+      </div>
+    </div>
+    <div class="step-item">
+      <span class="step-number">3</span>
+      <div class="step-content">
+        <strong>Repost the Pinned Post</strong>
+        <a href="https://x.com/exhibitiondefi/status/1979344321255006386" target="_blank" rel="noopener" class="step-link">Repost Now →</a>
+      </div>
+    </div>
+  </div>
+
   <section class="early-access">
     <h2>Get Early Access to Testnet</h2>
     <div class="registration-form">
@@ -303,12 +403,11 @@
   </footer>
 
   <script>
-    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx5ALUATnJdXv78BvNDtggrkjX6MxU4q7fPMX7EnU7nJurXUW6ZAVEOBUAiOhrHk5ht3A/exec";
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz-_LxDYYDdS7E4e5VtGq_aDTDHT3GZt5urocqCIICGZnvLdZKZ2H9aVYfv08n5zSlbrg/exec";
     const walletRegex = /^0x[a-fA-F0-9]{40}$/;
     const twitterRegex = /^[a-zA-Z0-9_]{1,15}$/;
     const repostRegex = /^https?:\/\/(x|twitter)\.com\/([A-Za-z0-9_]{1,15})\/status\/([0-9]+)$/i;
     const inlineMsg = document.getElementById("inlineMessage");
-    const debugConsole = document.getElementById("debugConsole");
 
     // Sanitize text content to prevent XSS
     function sanitizeText(text) {
@@ -317,24 +416,12 @@
       return div.innerHTML;
     }
 
-    // Safe logging function
-    function log(message) {
-      const timestamp = new Date().toLocaleTimeString();
-      const sanitized = sanitizeText(String(message));
-      debugConsole.innerHTML += `[${timestamp}] ${sanitized}<br>`;
-      debugConsole.scrollTop = debugConsole.scrollHeight;
-      console.log(message);
-    }
-
     // Safe message display
     function showMessage(text, type = "error") {
       inlineMsg.textContent = text; // textContent prevents XSS
       inlineMsg.className = `inline-alert show ${type}`;
-      log(`Message shown: ${text} (${type})`);
       setTimeout(() => inlineMsg.classList.remove("show"), 7000);
     }
-
-    log("Page loaded successfully");
 
     // Wallet connection
     document.getElementById('wallet').addEventListener('click', async function() {
@@ -450,7 +537,6 @@
       }
     });
   </script>
-
   <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </body>
 </html>
