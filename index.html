@@ -423,9 +423,13 @@
     const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxO2c8UDyx6Ly8OV8USIIlNDgwhggLlE_lj5l0cbbiplEWfk5Ll02jg0-ZZ1FW8ebN7nw/exec";
     const walletRegex = /^0x[a-fA-F0-9]{40}$/;
     const twitterRegex = /^[a-zA-Z0-9_]{1,15}$/;
-    const repostRegex = /^https?:\/\/(x|twitter)\.com\/([A-Za-z0-9_]{1,15})\/status\/([0-9]+)$/i;
+    const repostRegex = /^https?:\/\/(x|twitter)\.com\/[A-Za-z0-9_]{1,15}\/status\/[0-9]+/i;
     const inlineMsg = document.getElementById("inlineMessage");
     const debugConsole = document.getElementById("debugConsole");
+
+    // Required tweet details
+    const REQUIRED_TWEET_ID = "1979344321255006386";
+    const REQUIRED_HANDLE = "exhibitiondefi";
 
     // Sanitize text content to prevent XSS
     function sanitizeText(text) {
@@ -506,12 +510,17 @@
       const match = proof.match(repostRegex);
       if (!match) {
         log("Invalid repost URL format");
-        return showMessage("Please provide a valid repost URL like https://x.com/exhibitiondefi/status/123...", "error");
+        return showMessage("Please provide a valid X/Twitter status URL", "error");
       }
 
-      if (!proof.toLowerCase().includes("exhibitiondefi")) {
-        log("URL does not contain 'exhibitiondefi'");
-        return showMessage("❌ Not a repost of @ExhibitionDeFi's pinned post.", "error");
+      // Check if it's the specific required tweet
+      const baseUrl = proof.split('?')[0].toLowerCase();
+      const requiredUrl1 = `https://x.com/${REQUIRED_HANDLE}/status/${REQUIRED_TWEET_ID}`;
+      const requiredUrl2 = `https://twitter.com/${REQUIRED_HANDLE}/status/${REQUIRED_TWEET_ID}`;
+      
+      if (baseUrl !== requiredUrl1 && baseUrl !== requiredUrl2) {
+        log("Wrong tweet - must be the pinned post");
+        return showMessage("❌ Please submit the URL of @ExhibitionDeFi's pinned post: https://x.com/exhibitiondefi/status/1979344321255006386", "error");
       }
 
       const token = grecaptcha.getResponse();
@@ -574,4 +583,5 @@
 </body>
 
 </html>
+
 
